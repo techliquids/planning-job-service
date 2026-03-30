@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Management System - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info span {
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .welcome-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .welcome-section h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .welcome-section p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .label {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .features-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: inline-block;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 40px;
+        }
+
+        .feature-content {
+            padding: 20px;
+        }
+
+        .feature-content h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .feature-content p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background: #f0f4ff;
+            color: #667eea;
+            border: 1px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e8ff;
+        }
+
+        .module-section {
+            margin-bottom: 50px;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .module-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #667eea;
+        }
+
+        .module-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .module-card ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .module-card li {
+            padding: 8px 0;
+            color: #666;
+            font-size: 13px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .module-card li:last-child {
+            border-bottom: none;
+        }
+
+        .module-card li:before {
+            content: "✓ ";
+            color: #667eea;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .flow-diagram-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 50px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .flow-diagram-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .diagram-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .diagram-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #f0f4ff 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #667eea;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .diagram-card:hover {
+            transform: scale(1.05);
+        }
+
+        .diagram-card .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .diagram-card h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .diagram-card p {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .diagram-card a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .features-by-role {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .role-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-top: 4px solid #667eea;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .role-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .role-card h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .role-card ul {
+            list-style: none;
+        }
+
+        .role-card li {
+            padding: 6px 0;
+            color: #666;
+            font-size: 13px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .role-card li:last-child {
+            border-bottom: none;
+        }
+
+        .role-card li:before {
+            content: "→ ";
+            color: #667eea;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 13px;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 50px;
+        }
+
+        .alert {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
+
+        .tech-stack {
+            background: linear-gradient(135deg, #f5f7fa 0%, #f0f4ff 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #667eea;
+        }
+
+        .tech-stack h4 {
+            color: #667eea;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .tech-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tech-badge {
+            background: white;
+            color: #667eea;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            border: 1px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                🚀 ServiceHub
+            </div>
+            <div class="user-info">
+                <span>Welcome, <strong id="username">User</strong></span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1>Welcome to Service Management System</h1>
+            <p>A comprehensive platform for managing on-demand services, connecting employers with skilled service providers. This system includes job management, real-time notifications, payment processing, ratings, and advanced analytics.</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="number">25+</div>
+                    <div class="label">Features</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">4</div>
+                    <div class="label">User Roles</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">10+</div>
+                    <div class="label">Modules</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">100%</div>
+                    <div class="label">Scalable</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Core Features Section -->
+        <div class="features-section">
+            <h2 class="section-title">🎯 Core Features</h2>
+            
+            <div class="features-grid">
+                <!-- Authentication & Security -->
+                <div class="feature-card">
+                    <div class="feature-header">🔐</div>
+                    <div class="feature-content">
+                        <h3>Authentication & Security</h3>
+                        <p>Secure user signup, login, role-based access control, KYC verification, multi-device login control, and session management.</p>
+                        <button class="btn" onclick="openPage('features.html#auth')">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Job Management -->
+                <div class="feature-card">
+                    <div class="feature-header">📋</div>
+                    <div class="feature-content">
+                        <h3>Job Management</h3>
+                        <p>Post jobs, search & filter by location/category/budget, AI-based smart matching, and job categorization.</p>
+                        <button class="btn" onclick="openPage('features.html#jobs')">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Urgent Job System -->
+                <div class="feature-card">
+                    <div class="feature-header">⚡</div>
+                    <div class="feature-content">
+                        <h3>Urgent Job System</h3>
+                        <p>Real-time urgent job notifications with auto-escalation logic, batch notification, and smart worker matching.</p>
+                        <button class="btn" onclick="openPage('urgent-job-flow.html')">View Diagram</button>
+                    </div>
+                </div>
+
+                <!-- Real-time Chat -->
+                <div class="feature-card">
+                    <div class="feature-header">💬</div>
+                    <div class="feature-content">
+                        <h3>Real-time Chat System</h3>
+                        <p>One-to-one messaging between employers and employees with attachments, read receipts, and notifications.</p>
+                        <button class="btn" onclick="openPage('features.html#chat')">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Payment & Wallet -->
+                <div class="feature-card">
+                    <div class="feature-header">💳</div>
+                    <div class="feature-content">
+                        <h3>Payment & Wallet System</h3>
+                        <p>Secure payment processing, escrow system, wallet management, withdraw requests, and transaction history.</p>
+                        <button class="btn" onclick="openPage('payment-flow.html')">View Flow</button>
+                    </div>
+                </div>
+
+                <!-- Ratings & Reviews -->
+                <div class="feature-card">
+                    <div class="feature-header">⭐</div>
+                    <div class="feature-content">
+                        <h3>Ratings & Reviews</h3>
+                        <p>Bi-directional ratings system, review moderation, and rating-based worker ranking and search.</p>
+                        <button class="btn" onclick="openPage('features.html#ratings')">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="feature-card">
+                    <div class="feature-header">🔔</div>
+                    <div class="feature-content">
+                        <h3>Multi-channel Notifications</h3>
+                        <p>Push notifications, SMS alerts, email notifications for all critical events and transactions.</p>
+                        <button class="btn" onclick="openPage('features.html#notifications')">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Analytics & Reports -->
+                <div class="feature-card">
+                    <div class="feature-header">📊</div>
+                    <div class="feature-content">
+                        <h3>Analytics & Reports</h3>
+                        <p>Revenue reports, job completion analytics, employee performance metrics, and detailed commission tracking.</p>
+                        <button class="btn" onclick="openPage('features.html#analytics')">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Admin Dashboard -->
+                <div class="feature-card">
+                    <div class="feature-header">👨‍💼</div>
+                    <div class="feature-content">
+                        <h3>Admin Dashboard</h3>
+                        <p>User management, job monitoring, payment tracking, dispute handling, and system configuration.</p>
+                        <button class="btn" onclick="openPage('features.html#admin')">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Dispute Management -->
+                <div class="feature-card">
+                    <div class="feature-header">⚖️</div>
+                    <div class="feature-content">
+                        <h3>Dispute Management</h3>
+                        <p>Raise complaints, upload proof, admin resolution, and refund/penalty handling system.</p>
+                        <button class="btn" onclick="openPage('features.html#disputes')">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Compliance & Security -->
+                <div class="feature-card">
+                    <div class="feature-header">🛡️</div>
+                    <div class="feature-content">
+                        <h3>Compliance & Security</h3>
+                        <p>Data encryption, role-based permissions, audit logs, secure APIs, and compliance readiness.</p>
+                        <button class="btn" onclick="openPage('features.html#compliance')">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Future AI Features -->
+                <div class="feature-card">
+                    <div class="feature-header">🤖</div>
+                    <div class="feature-content">
+                        <h3>AI Features (Future)</h3>
+                        <p>Smart worker matching, price recommendations, fraud detection, and behavior analysis.</p>
+                        <button class="btn" onclick="openPage('ai-features.html')">Explore AI</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Architecture -->
+        <div class="flow-diagram-section">
+            <h2>📐 System Architecture & Flow Diagrams</h2>
+            <p style="color: #666; margin-bottom: 20px;">Interactive diagrams showing the complete system architecture and user flows.</p>
+            
+            <div class="diagram-grid">
+                <div class="diagram-card">
+                    <div class="icon">🏗️</div>
+                    <h4>System Architecture</h4>
+                    <p>Complete system design showing all modules and their relationships</p>
+                    <a href="system-architecture.html">View Architecture →</a>
+                </div>
+
+                <div class="diagram-card">
+                    <div class="icon">⚡</div>
+                    <h4>Urgent Job Flow</h4>
+                    <p>Real-time urgent job notification and auto-escalation flow</p>
+                    <a href="urgent-job-flow.html">View Flow →</a>
+                </div>
+
+                <div class="diagram-card">
+                    <div class="icon">💰</div>
+                    <h4>Payment Flow</h4>
+                    <p>Complete payment processing and wallet distribution flow</p>
+                    <a href="payment-flow.html">View Flow →</a>
+                </div>
+
+                <div class="diagram-card">
+                    <div class="icon">👥</div>
+                    <h4>User Roles & Access</h4>
+                    <p>Four user roles with different permissions and features</p>
+                    <a href="features.html#roles">View Roles →</a>
+                </div>
+
+                <div class="diagram-card">
+                    <div class="icon">🔄</div>
+                    <h4>Job Execution Flow</h4>
+                    <p>Complete job lifecycle from posting to completion</p>
+                    <a href="features.html#execution">View Flow →</a>
+                </div>
+
+                <div class="diagram-card">
+                    <div class="icon">🤖</div>
+                    <h4>AI Features Roadmap</h4>
+                    <p>Future AI enhancements and smart features</p>
+                    <a href="ai-features.html">Explore →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features by Role Section -->
+        <div class="features-section">
+            <h2 class="section-title">👥 Features by User Role</h2>
+            
+            <div class="features-by-role">
+                <div class="role-card">
+                    <span class="role-badge">🔧 Super Admin</span>
+                    <h4>Administrator</h4>
+                    <ul>
+                        <li>User Management</li>
+                        <li>Job Monitoring</li>
+                        <li>Payment Tracking</li>
+                        <li>Commission Tracking</li>
+                        <li>Reports & Analytics</li>
+                        <li>Dispute Resolution</li>
+                        <li>System Configuration</li>
+                    </ul>
+                </div>
+
+                <div class="role-card">
+                    <span class="role-badge">👔 Employer</span>
+                    <h4>Customer</h4>
+                    <ul>
+                        <li>Post Jobs</li>
+                        <li>Search Workers</li>
+                        <li>View Proposals</li>
+                        <li>Accept Workers</li>
+                        <li>Real-time Chat</li>
+                        <li>Rate & Review</li>
+                        <li>Make Payments</li>
+                    </ul>
+                </div>
+
+                <div class="role-card">
+                    <span class="role-badge">👤 Employee</span>
+                    <h4>Service Provider</h4>
+                    <ul>
+                        <li>Search Jobs</li>
+                        <li>Send Proposals</li>
+                        <li>Receive Notifications</li>
+                        <li>Chat with Employers</li>
+                        <li>Complete Jobs</li>
+                        <li>Receive Payments</li>
+                        <li>View Ratings</li>
+                    </ul>
+                </div>
+
+                <div class="role-card">
+                    <span class="role-badge">🏢 Service Provider</span>
+                    <h4>Agency</h4>
+                    <ul>
+                        <li>Add/Manage Employees</li>
+                        <li>Assign Jobs</li>
+                        <li>Track Earnings</li>
+                        <li>Manage Commissions</li>
+                        <li>Bulk Job Handling</li>
+                        <li>Performance Reports</li>
+                        <li>Team Analytics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Stack -->
+        <div class="features-section">
+            <h2 class="section-title">⚙️ Technical Architecture</h2>
+            
+            <div class="tech-stack">
+                <h4>Frontend Stack</h4>
+                <div class="tech-items">
+                    <span class="tech-badge">React.js</span>
+                    <span class="tech-badge">HTML5</span>
+                    <span class="tech-badge">CSS3</span>
+                    <span class="tech-badge">JavaScript</span>
+                    <span class="tech-badge">Responsive Design</span>
+                </div>
+            </div>
+
+            <div class="tech-stack" style="margin-top: 15px;">
+                <h4>Backend & Database</h4>
+                <div class="tech-items">
+                    <span class="tech-badge">Node.js / Express</span>
+                    <span class="tech-badge">MongoDB / PostgreSQL</span>
+                    <span class="tech-badge">WebSocket (Real-time)</span>
+                    <span class="tech-badge">RESTful APIs</span>
+                    <span class="tech-badge">JWT Authentication</span>
+                </div>
+            </div>
+
+            <div class="tech-stack" style="margin-top: 15px;">
+                <h4>Additional Services</h4>
+                <div class="tech-items">
+                    <span class="tech-badge">Google Maps API</span>
+                    <span class="tech-badge">Payment Gateway</span>
+                    <span class="tech-badge">Push Notifications</span>
+                    <span class="tech-badge">SMS Service</span>
+                    <span class="tech-badge">Email Service</span>
+                    <span class="tech-badge">File Storage</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Module Breakdown -->
+        <div class="features-section">
+            <h2 class="section-title">📦 Core Modules</h2>
+            
+            <div class="module-grid">
+                <div class="module-card">
+                    <h3>1. Authentication Module</h3>
+                    <ul>
+                        <li>Mobile OTP signup</li>
+                        <li>Email-based registration</li>
+                        <li>Multi-device login</li>
+                        <li>KYC verification</li>
+                        <li>Session management</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <h3>2. Job Module</h3>
+                    <ul>
+                        <li>Job posting & publishing</li>
+                        <li>Job search & filtering</li>
+                        <li>Category management</li>
+                        <li>Location-based services</li>
+                        <li>Job status tracking</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <h3>3. Urgent Job Module</h3>
+                    <ul>
+                        <li>Auto-escalation logic</li>
+                        <li>Batch notifications</li>
+                        <li>Smart prioritization</li>
+                        <li>Real-time updates</li>
+                        <li>Timeout handling</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <h3>4. Proposal Module</h3>
+                    <ul>
+                        <li>Worker bidding system</li>
+                        <li>Price negotiations</li>
+                        <li>Proposal acceptance</li>
+                        <li>Rejection workflow</li>
+                        <li>Proposal tracking</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <h3>5. Chat Module</h3>
+                    <ul>
+                        <li>Real-time messaging</li>
+                        <li>File attachments</li>
+                        <li>Message history</li>
+                        <li>Read receipts</li>
+                        <li>Notifications</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <h3>6. Payment Module</h3>
+                    <ul>
+                        <li>Escrow payment system</li>
+                        <li>Wallet management</li>
+                        <li>Transaction processing</li>
+                        <li>Withdrawal requests</li>
+                        <li>Invoice generation</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <h3>7. Location Module</h3>
+                    <ul>
+                        <li>GPS tracking</li>
+                        <li>Geofencing</li>
+                        <li>Map integration</li>
+                        <li>Radius filtering</li>
+                        <li>Live location sharing</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <h3>8. Rating Module</h3>
+                    <ul>
+                        <li>Bi-directional ratings</li>
+                        <li>Review moderation</li>
+                        <li>Star rating system</li>
+                        <li>Reputation scoring</li>
+                        <li>Review analytics</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <h3>9. Notification Module</h3>
+                    <ul>
+                        <li>Push notifications</li>
+                        <li>SMS alerts</li>
+                        <li>Email notifications</li>
+                        <li>In-app messaging</li>
+                        <li>Notification preferences</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <h3>10. Admin Module</h3>
+                    <ul>
+                        <li>User management</li>
+                        <li>Job moderation</li>
+                        <li>Payment oversight</li>
+                        <li>Dispute resolution</li>
+                        <li>System analytics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>🚀 Service Management System v1.0 | Built with modern technologies for scalability and reliability</p>
+            <p style="margin-top: 10px; font-size: 12px;">© 2024 ServiceHub. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+// Check if user is logged in (Inside index.html)
+window.addEventListener('load', function() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const currentPage = window.location.pathname;
+
+    // ONLY redirect if we ARE NOT logged in AND NOT already on login.html
+  
+    
+    // Set username if logged in
+    const user = localStorage.getItem('username');
+    if (user && document.getElementById('username')) {
+        document.getElementById('username').textContent = user;
+    }
+});
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('username');
+                localStorage.removeItem('loginTime');
+                window.location.href = 'login.html';
+            }
+        }
+
+        function openPage(page) {
+            window.location.href = page;
+        }
+    </script>
+</body>
+</html>
