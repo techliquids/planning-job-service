@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Flow - Service Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .page-title h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .page-title p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .flow-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .payment-flow-visual {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            padding: 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #f0f4ff 100%);
+            border-radius: 10px;
+            border: 2px solid #667eea;
+        }
+
+        .flow-node {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 140px;
+            font-weight: 600;
+        }
+
+        .flow-arrow {
+            font-size: 24px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .flow-steps {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .flow-step {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .flow-step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .step-content h3 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .step-content p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .step-details {
+            background: #f0f4ff;
+            padding: 12px;
+            border-left: 3px solid #667eea;
+            margin-top: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .step-details strong {
+            color: #667eea;
+        }
+
+        .wallet-distribution {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .wallet-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .wallet-card .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .wallet-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .wallet-card .amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin: 15px 0;
+        }
+
+        .wallet-card p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .calculation-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #f0f4ff 100%);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .calculation-box strong {
+            color: #667eea;
+        }
+
+        .calculation-box .calc-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .calculation-box .calc-line.total {
+            border-bottom: none;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid #667eea;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .escrow-flow {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .escrow-stages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .escrow-stage {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #667eea;
+            text-align: center;
+        }
+
+        .escrow-stage .stage-number {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin: 0 auto 10px;
+        }
+
+        .escrow-stage h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .escrow-stage p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .payment-gateway {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .payment-method {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover {
+            border-color: #667eea;
+            background: white;
+        }
+
+        .payment-method .icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .payment-method p {
+            color: #666;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .transaction-history {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .transaction-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        .transaction-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .transaction-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .transaction-table tr:hover {
+            background: #f0f4ff;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-badge.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-badge.pending {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .status-badge.failed {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .commission-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .commission-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .commission-card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .commission-card ul {
+            list-style: none;
+        }
+
+        .commission-card li {
+            padding: 8px 0;
+            color: #666;
+            font-size: 13px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .commission-card li:last-child {
+            border-bottom: none;
+        }
+
+        .commission-card li:before {
+            content: "→ ";
+            color: #667eea;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .api-example {
+            background: #2d3436;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 13px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                🚀 ServiceHub - Payment & Wallet System
+            </div>
+            <a href="index.html" class="back-btn">← Back to Dashboard</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1>💳 Payment & Wallet System</h1>
+            <p>Comprehensive payment processing with secure escrow system, multi-wallet management, automatic commission deduction, and detailed transaction tracking for all user roles.</p>
+        </div>
+
+        <!-- Payment Flow Visualization -->
+        <div class="flow-container">
+            <h2 style="color: #667eea; margin-bottom: 20px; font-size: 24px;">💰 Payment Flow Overview</h2>
+            
+            <div class="payment-flow-visual">
+                <div class="flow-node">👔 Employer Pays</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">🔒 Escrow Hold</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">✅ Job Done</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">💳 Release to Wallet</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">🏦 Commission</div>
+            </div>
+        </div>
+
+        <!-- Detailed Steps -->
+        <div class="flow-steps">
+            <h2 style="color: #667eea; margin-bottom: 30px; font-size: 24px;">📋 Complete Payment Process</h2>
+
+            <div class="flow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Job Accepted & Payment Initiated</h3>
+                    <p>After worker accepts the job, employer initiates payment through the platform. Amount is captured and verified.</p>
+                    <div class="step-details">
+                        <strong>Amount Captured:</strong> Job budget specified during job posting + any additional charges
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Payment Gateway Processing</h3>
+                    <p>Payment is processed through integrated payment gateway (Razorpay, Stripe, or local gateway). Transaction is authorized and verified.</p>
+                    <div class="step-details">
+                        <strong>Payment Methods Accepted:</strong> Credit Card, Debit Card, Net Banking, UPI, Digital Wallets, Bank Transfer
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Amount Held in Escrow</h3>
+                    <p>Successfully paid amount is held in a secure escrow account. Funds are not released to the worker immediately. This protects both parties.</p>
+                    <div class="step-details">
+                        <strong>Escrow Duration:</strong> Until job completion + employer confirmation (typically 24-48 hours)
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Worker Performs Job</h3>
+                    <p>Worker arrives at location, starts job, and completes assigned tasks with employer monitoring and real-time updates.</p>
+                    <div class="step-details">
+                        <strong>Tracking:</strong> GPS check-in → Job status updates → Real-time communication → GPS check-out confirmation
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h3>Job Completion & Employer Confirmation</h3>
+                    <p>Worker marks job as complete with photos/videos as proof. Employer reviews and confirms job satisfaction.</p>
+                    <div class="step-details">
+                        <strong>Confirmation Options:</strong> Auto-confirm (after 24 hours) → Manual confirmation → Request revision → Rate worker
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h3>Commission Calculation</h3>
+                    <p>System automatically calculates platform commission, service provider commission (if applicable), and net amount for worker.</p>
+                    <div class="step-details">
+                        <strong>Calculations:</strong> Gross Amount → Platform Commission → Service Provider Commission → GST (if applicable) → Net Amount
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-number">7</div>
+                <div class="step-content">
+                    <h3>Release from Escrow & Distribution</h3>
+                    <p>After employer confirmation, amount is released from escrow and automatically distributed to respective wallets.</p>
+                    <div class="step-details">
+                        <strong>Distribution:</strong> Worker Wallet ← Net Amount | Service Provider Wallet ← Commission (if applicable) | Platform Account ← Platform Commission
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-number">8</div>
+                <div class="step-content">
+                    <h3>Invoice Generation & Notification</h3>
+                    <p>System generates detailed invoice with breakdown of all charges, commissions, taxes, and GST details.</p>
+                    <div class="step-details">
+                        <strong>Invoice Contains:</strong> Job details, gross amount, commission breakdown, taxes, GST, net amount, payment method, timestamp
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-number">9</div>
+                <div class="step-content">
+                    <h3>Wallet Credit & Fund Availability</h3>
+                    <p>Amount is credited to worker's wallet. Worker can immediately use funds for future transactions or request withdrawal.</p>
+                    <div class="step-details">
+                        <strong>Wallet Options:</strong> Keep in wallet → Use for other services → Request withdrawal → Check transaction history
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-number">10</div>
+                <div class="step-content">
+                    <h3>Withdrawal & Bank Transfer</h3>
+                    <p>Worker can request withdrawal of wallet balance to their registered bank account or payment method.</p>
+                    <div class="step-details">
+                        <strong>Withdrawal Process:</strong> Request initiated → KYC verification → Processing (1-3 business days) → Amount transferred to bank account
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wallet Distribution -->
+        <div class="flow-container">
+            <h2 style="color: #667eea; margin-bottom: 30px; font-size: 24px;">💼 Wallet Distribution Example</h2>
+
+            <div class="calculation-box">
+                <strong>📊 Sample Payment Breakdown</strong>
+                <div class="calc-line">
+                    <span>Job Budget (Gross Amount)</span>
+                    <span>₹ 1,000.00</span>
+                </div>
+                <div class="calc-line">
+                    <span>Platform Commission (10%)</span>
+                    <span>- ₹ 100.00</span>
+                </div>
+                <div class="calc-line">
+                    <span>Service Provider Commission (5%)</span>
+                    <span>- ₹ 50.00</span>
+                </div>
+                <div class="calc-line">
+                    <span>Amount after Commissions</span>
+                    <span>₹ 850.00</span>
+                </div>
+                <div class="calc-line">
+                    <span>CGST (9%)</span>
+                    <span>- ₹ 76.50</span>
+                </div>
+                <div class="calc-line">
+                    <span>SGST (9%)</span>
+                    <span>- ₹ 76.50</span>
+                </div>
+                <div class="calc-line total">
+                    <span>Net Amount to Worker</span>
+                    <span>₹ 697.00</span>
+                </div>
+            </div>
+
+            <div class="wallet-distribution">
+                <div class="wallet-card">
+                    <div class="icon">👤</div>
+                    <h4>Employee Wallet</h4>
+                    <div class="amount">₹ 697.00</div>
+                    <p>Worker receives net amount after all deductions. Can withdraw immediately or use for future services.</p>
+                </div>
+
+                <div class="wallet-card">
+                    <div class="icon">🏢</div>
+                    <h4>Service Provider Wallet</h4>
+                    <div class="amount">₹ 50.00</div>
+                    <p>Agency/provider receives commission if worker is assigned through service provider agency.</p>
+                </div>
+
+                <div class="wallet-card">
+                    <div class="icon">🔒</div>
+                    <h4>Platform Account</h4>
+                    <div class="amount">₹ 100.00</div>
+                    <p>Platform receives commission for providing the service and managing the transaction.</p>
+                </div>
+
+                <div class="wallet-card">
+                    <div class="icon">🏦</div>
+                    <h4>GST Collected</h4>
+                    <div class="amount">₹ 153.00</div>
+                    <p>18% GST is collected and deposited to government authorities separately. Transparent and compliant.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Escrow Protection -->
+        <div class="escrow-flow">
+            <h2 style="color: #667eea; margin-bottom: 30px; font-size: 24px;">🔒 Escrow Protection Stages</h2>
+
+            <p style="color: #666; margin-bottom: 20px;">Secure payment holding system that protects both employer and worker throughout the job lifecycle.</p>
+
+            <div class="escrow-stages">
+                <div class="escrow-stage">
+                    <div class="stage-number">1</div>
+                    <h4>Payment Received</h4>
+                    <p>Amount collected from employer's payment method and held in secure escrow account.</p>
+                </div>
+
+                <div class="escrow-stage">
+                    <div class="stage-number">2</div>
+                    <h4>Job In Progress</h4>
+                    <p>Amount remains held while worker performs the assigned job. No funds released yet.</p>
+                </div>
+
+                <div class="escrow-stage">
+                    <div class="stage-number">3</div>
+                    <h4>Job Completed</h4>
+                    <p>Worker marks job complete with proof. Employer has 24 hours to confirm satisfaction.</p>
+                </div>
+
+                <div class="escrow-stage">
+                    <div class="stage-number">4</div>
+                    <h4>Confirmation Period</h4>
+                    <p>Employer reviews work quality. Can approve, request revision, or raise dispute.</p>
+                </div>
+
+                <div class="escrow-stage">
+                    <div class="stage-number">5</div>
+                    <h4>Amount Released</h4>
+                    <p>After confirmation, amount is released from escrow and distributed to respective wallets automatically.</p>
+                </div>
+
+                <div class="escrow-stage">
+                    <div class="stage-number">6</div>
+                    <h4>Dispute Resolution</h4>
+                    <p>If dispute raised, admin holds funds and resolves issue. Funds released after resolution.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="payment-gateway">
+            <h2 style="color: #667eea; margin-bottom: 20px; font-size: 24px;">💳 Payment Methods Supported</h2>
+
+            <div class="payment-methods">
+                <div class="payment-method">
+                    <div class="icon">💳</div>
+                    <p>Credit Card</p>
+                </div>
+
+                <div class="payment-method">
+                    <div class="icon">💳</div>
+                    <p>Debit Card</p>
+                </div>
+
+                <div class="payment-method">
+                    <div class="icon">🏦</div>
+                    <p>Net Banking</p>
+                </div>
+
+                <div class="payment-method">
+                    <div class="icon">📱</div>
+                    <p>UPI</p>
+                </div>
+
+                <div class="payment-method">
+                    <div class="icon">💰</div>
+                    <p>Digital Wallet</p>
+                </div>
+
+                <div class="payment-method">
+                    <div class="icon">🏧</div>
+                    <p>Bank Transfer</p>
+                </div>
+
+                <div class="payment-method">
+                    <div class="icon">💳</div>
+                    <p>Buy Now Pay Later</p>
+                </div>
+
+                <div class="payment-method">
+                    <div class="icon">🎁</div>
+                    <p>Gift Cards</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Commission Management -->
+        <div class="flow-steps">
+            <h2 style="color: #667eea; margin-bottom: 30px; font-size: 24px;">📊 Commission Management</h2>
+
+            <div class="commission-breakdown">
+                <div class="commission-card">
+                    <h4>Platform Commission</h4>
+                    <ul>
+                        <li>Default: 10%</li>
+                        <li>Per job basis</li>
+                        <li>Configurable per category</li>
+                        <li>Can be reduced for bulk jobs</li>
+                        <li>Real-time calculation</li>
+                    </ul>
+                </div>
+
+                <div class="commission-card">
+                    <h4>Service Provider Commission</h4>
+                    <ul>
+                        <li>Default: 5%</li>
+                        <li>Applies when worker assigned through agency</li>
+                        <li>Configurable per agency</li>
+                        <li>Negotiable contracts</li>
+                        <li>Separate wallet tracking</li>
+                    </ul>
+                </div>
+
+                <div class="commission-card">
+                    <h4>Automatic Deduction</h4>
+                    <ul>
+                        <li>Deducted from gross amount</li>
+                        <li>Applied at wallet distribution</li>
+                        <li>Worker sees net amount only</li>
+                        <li>Invoice shows breakdown</li>
+                        <li>Fully transparent process</li>
+                    </ul>
+                </div>
+
+                <div class="commission-card">
+                    <h4>Commission Reports</h4>
+                    <ul>
+                        <li>Daily/Monthly analytics</li>
+                        <li>Per category reports</li>
+                        <li>Per worker analysis</li>
+                        <li>Revenue trends</li>
+                        <li>Forecasting tools</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction History Example -->
+        <div class="transaction-history">
+            <h2 style="color: #667eea; margin-bottom: 20px; font-size: 24px;">📝 Transaction History Example</h2>
+
+            <table class="transaction-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Job ID</th>
+                        <th>Description</th>
+                        <th>Gross Amount</th>
+                        <th>Commission</th>
+                        <th>Net Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024-01-15</td>
+                        <td>JOB_12001</td>
+                        <td>Plumbing Repair</td>
+                        <td>₹ 1,000</td>
+                        <td>₹ 150</td>
+                        <td>₹ 850</td>
+                        <td><span class="status-badge success">✓ Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-14</td>
+                        <td>JOB_12002</td>
+                        <td>Electrical Work</td>
+                        <td>₹ 1,500</td>
+                        <td>₹ 225</td>
+                        <td>₹ 1,275</td>
+                        <td><span class="status-badge success">✓ Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-13</td>
+                        <td>JOB_12003</td>
+                        <td>Cleaning Service</td>
+                        <td>₹ 500</td>
+                        <td>₹ 75</td>
+                        <td>₹ 425</td>
+                        <td><span class="status-badge pending">⏳ In Progress</span></td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-12</td>
+                        <td>JOB_12004</td>
+                        <td>Painting Work</td>
+                        <td>₹ 2,000</td>
+                        <td>₹ 300</td>
+                        <td>₹ 1,700</td>
+                        <td><span class="status-badge success">✓ Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-11</td>
+                        <td>JOB_12005</td>
+                        <td>Furniture Moving</td>
+                        <td>₹ 800</td>
+                        <td>₹ 120</td>
+                        <td>₹ 680</td>
+                        <td><span class="status-badge success">✓ Completed</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>🚀 Service Management System v1.0 | Payment & Wallet System</p>
+            <p style="margin-top: 10px; font-size: 12px;">© 2024 ServiceHub. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Features Roadmap - Service Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .page-title h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .page-title p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .ai-features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .ai-feature-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 5px solid #667eea;
+        }
+
+        .ai-feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .feature-header .icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .feature-header h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .feature-header .status {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .feature-content {
+            padding: 25px;
+        }
+
+        .feature-content p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .feature-benefits {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .feature-benefits h4 {
+            color: #667eea;
+            font-size: 13px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .feature-benefits ul {
+            list-style: none;
+        }
+
+        .feature-benefits li {
+            padding: 5px 0;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .feature-benefits li:before {
+            content: "✓ ";
+            color: #667eea;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .roadmap-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 50px;
+        }
+
+        .roadmap-timeline {
+            position: relative;
+            padding: 30px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline-item:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            border: 4px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px #667eea;
+        }
+
+        .timeline-item:after {
+            content: "";
+            position: absolute;
+            left: 9px;
+            top: 30px;
+            width: 2px;
+            height: 200px;
+            background: #667eea;
+            opacity: 0.3;
+        }
+
+        .timeline-item:last-child:after {
+            display: none;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-content h3 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .timeline-content .phase {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .timeline-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .timeline-features {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .timeline-features strong {
+            color: #667eea;
+            font-size: 13px;
+        }
+
+        .timeline-features ul {
+            list-style: none;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .timeline-features li:before {
+            content: "→ ";
+            color: #667eea;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        .implementation-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 50px;
+        }
+
+        .implementation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .impl-card {
+            background: linear-gradient(135deg, #f0f4ff 0%, #f5f7fa 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+        }
+
+        .impl-card h4 {
+            color: #667eea;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .impl-card p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .impl-card ul {
+            list-style: none;
+        }
+
+        .impl-card li {
+            padding: 5px 0;
+            color: #666;
+            font-size: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .impl-card li:last-child {
+            border-bottom: none;
+        }
+
+        .impl-card li:before {
+            content: "• ";
+            color: #667eea;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .use-cases-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 50px;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .use-case-card {
+            background: #f0f4ff;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .use-case-card .icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .use-case-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .use-case-card p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .use-case-example {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #333;
+            font-style: italic;
+            border-left: 2px solid #667eea;
+            padding-left: 12px;
+        }
+
+        .benefits-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 50px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .benefit-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .benefit-card .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .benefit-card h4 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .benefit-card p {
+            font-size: 13px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .tech-stack-ai {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 50px;
+        }
+
+        .tech-category {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .tech-category:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .tech-category h4 {
+            color: #667eea;
+            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .tech-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tech-badge {
+            background: #f0f4ff;
+            color: #667eea;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            border: 1px solid #667eea;
+            font-weight: 500;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 13px;
+            margin-top: 50px;
+        }
+
+        .coming-soon {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            color: #e65100;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                🤖 ServiceHub - AI Features Roadmap
+            </div>
+            <a href="index.html" class="back-btn">← Back to Dashboard</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1>🤖 AI & Machine Learning Features</h1>
+            <p>Advanced artificial intelligence capabilities designed to enhance user experience, improve matching accuracy, detect fraud, and provide intelligent insights for the service management platform.</p>
+        </div>
+
+        <div class="coming-soon">
+            ⚠️ <strong>Future Development:</strong> These features are planned for upcoming releases and will be progressively implemented based on platform maturity and user feedback.
+        </div>
+
+        <!-- AI Features Grid -->
+        <div class="ai-features-grid">
+            <!-- Smart Matching -->
+            <div class="ai-feature-card">
+                <div class="feature-header">
+                    <div class="icon">🎯</div>
+                    <h3>Smart Worker Matching</h3>
+                    <div class="status">Phase 2 Development</div>
+                </div>
+                <div class="feature-content">
+                    <p>AI-powered algorithm that intelligently matches job seekers with the most suitable employers based on skills, experience, location, availability, and historical performance.</p>
+                    <div class="feature-benefits">
+                        <h4>Key Benefits:</h4>
+                        <ul>
+                            <li>Improved job acceptance rates</li>
+                            <li>Better quality matches</li>
+                            <li>Reduced customer dissatisfaction</li>
+                            <li>Higher platform engagement</li>
+                            <li>Faster job completion</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price Recommendation -->
+            <div class="ai-feature-card">
+                <div class="feature-header">
+                    <div class="icon">💰</div>
+                    <h3>Dynamic Price Recommendation</h3>
+                    <div class="status">Phase 2 Development</div>
+                </div>
+                <div class="feature-content">
+                    <p>ML model that suggests optimal pricing based on market demand, worker expertise, location, time of day, job complexity, and historical pricing patterns.</p>
+                    <div class="feature-benefits">
+                        <h4>Key Benefits:</h4>
+                        <ul>
+                            <li>Competitive pricing suggestions</li>
+                            <li>Maximize earnings for workers</li>
+                            <li>Reduce pricing disputes</li>
+                            <li>Market rate transparency</li>
+                            <li>Dynamic surge pricing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fraud Detection -->
+            <div class="ai-feature-card">
+                <div class="feature-header">
+                    <div class="icon">🛡️</div>
+                    <h3>Advanced Fraud Detection</h3>
+                    <div class="status">Phase 3 Development</div>
+                </div>
+                <div class="feature-content">
+                    <p>Real-time fraud detection system using anomaly detection, behavioral analysis, and pattern recognition to identify suspicious activities and protect users.</p>
+                    <div class="feature-benefits">
+                        <h4>Key Benefits:</h4>
+                        <ul>
+                            <li>Real-time threat detection</li>
+                            <li>Reduced payment fraud</li>
+                            <li>Account security protection</li>
+                            <li>Automatic suspicious activity alerts</li>
+                            <li>Compliance with regulations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Predictive Analytics -->
+            <div class="ai-feature-card">
+                <div class="feature-header">
+                    <div class="icon">📊</div>
+                    <h3>Predictive Analytics</h3>
+                    <div class="status">Phase 3 Development</div>
+                </div>
+                <div class="feature-content">
+                    <p>Machine learning models to predict job completion times, worker performance, demand trends, and earnings forecasts for better planning.</p>
+                    <div class="feature-benefits">
+                        <h4>Key Benefits:</h4>
+                        <ul>
+                            <li>Accurate ETA predictions</li>
+                            <li>Demand forecasting</li>
+                            <li>Earnings projections</li>
+                            <li>Resource planning</li>
+                            <li>Seasonal trend analysis</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Behavioral Analysis -->
+            <div class="ai-feature-card">
+                <div class="feature-header">
+                    <div class="icon">🧠</div>
+                    <h3>Behavioral Analysis</h3>
+                    <div class="status">Phase 4 Development</div>
+                </div>
+                <div class="feature-content">
+                    <p>Deep learning analysis of user behavior patterns to identify risk factors, predict churn, and optimize user experience personalization.</p>
+                    <div class="feature-benefits">
+                        <h4>Key Benefits:</h4>
+                        <ul>
+                            <li>Churn prediction & prevention</li>
+                            <li>Risk identification</li>
+                            <li>User segmentation</li>
+                            <li>Personalized recommendations</li>
+                            <li>Engagement optimization</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chatbot Assistant -->
+            <div class="ai-feature-card">
+                <div class="feature-header">
+                    <div class="icon">💬</div>
+                    <h3>AI Chatbot Assistant</h3>
+                    <div class="status">Phase 2 Development</div>
+                </div>
+                <div class="feature-content">
+                    <p>Natural language processing powered chatbot to answer FAQs, resolve issues, provide recommendations, and handle customer support 24/7.</p>
+                    <div class="feature-benefits">
+                        <h4>Key Benefits:</h4>
+                        <ul>
+                            <li>24/7 customer support</li>
+                            <li>Instant FAQ answers</li>
+                            <li>Reduced support tickets</li>
+                            <li>Fast issue resolution</li>
+                            <li>Multi-language support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Recognition -->
+            <div class="ai-feature-card">
+                <div class="feature-header">
+                    <div class="icon">🖼️</div>
+                    <h3>Image Recognition</h3>
+                    <div class="status">Phase 3 Development</div>
+                </div>
+                <div class="feature-content">
+                    <p>Computer vision technology to verify job completion through photos/videos, detect falsified claims, and ensure quality control.</p>
+                    <div class="feature-benefits">
+                        <h4>Key Benefits:</h4>
+                        <ul>
+                            <li>Auto-verify job completion</li>
+                            <li>Quality assurance</li>
+                            <li>Fraud prevention</li>
+                            <li>Service verification</li>
+                            <li>Automatic proof validation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skill Assessment -->
+            <div class="ai-feature-card">
+                <div class="feature-header">
+                    <div class="icon">📜</div>
+                    <h3>AI Skill Assessment</h3>
+                    <div class="status">Phase 4 Development</div>
+                </div>
+                <div class="feature-content">
+                    <p>Automated skills evaluation through quizzes, tests, and practical assessments. Award badges and certifications based on verified abilities.</p>
+                    <div class="feature-benefits">
+                        <h4>Key Benefits:</h4>
+                        <ul>
+                            <li>Verified skill certificates</li>
+                            <li>Worker credibility boost</li>
+                            <li>Better job matching</li>
+                            <li>Quality assurance</li>
+                            <li>Training recommendations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Implementation Roadmap -->
+        <div class="roadmap-section">
+            <h2 style="color: #667eea; margin-bottom: 30px; font-size: 24px;">📅 Implementation Roadmap</h2>
+
+            <div class="roadmap-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Phase 1: Foundation (Q1-Q2 2024)</h3>
+                        <span class="phase">COMPLETED</span>
+                        <p>Establishing core infrastructure and basic features for the platform.</p>
+                        <div class="timeline-features">
+                            <strong>Delivered:</strong>
+                            <ul>
+                                <li>Core authentication & user management</li>
+                                <li>Job posting & search functionality</li>
+                                <li>Basic matching algorithm</li>
+                                <li>Payment system & wallet</li>
+                                <li>Rating & review system</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Phase 2: Intelligence (Q3-Q4 2024)</h3>
+                        <span class="phase">IN PROGRESS</span>
+                        <p>Adding intelligent features and real-time capabilities.</p>
+                        <div class="timeline-features">
+                            <strong>In Development:</strong>
+                            <ul>
+                                <li>Smart worker matching AI</li>
+                                <li>Dynamic price recommendations</li>
+                                <li>AI chatbot assistant</li>
+                                <li>Real-time notifications</li>
+                                <li>Advanced analytics dashboard</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Phase 3: Security & Quality (Q1 2025)</h3>
+                        <span class="phase">PLANNED</span>
+                        <p>Enhanced security with fraud detection and quality assurance.</p>
+                        <div class="timeline-features">
+                            <strong>Planned Features:</strong>
+                            <ul>
+                                <li>Advanced fraud detection system</li>
+                                <li>Image recognition for verification</li>
+                                <li>Predictive analytics</li>
+                                <li>Automated dispute resolution</li>
+                                <li>Compliance automation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Phase 4: Advanced AI (Q2-Q3 2025)</h3>
+                        <span class="phase">PLANNED</span>
+                        <p>Cutting-edge AI features for superior user experience.</p>
+                        <div class="timeline-features">
+                            <strong>Planned Features:</strong>
+                            <ul>
+                                <li>Behavioral analysis & churn prediction</li>
+                                <li>AI skill assessment system</li>
+                                <li>Voice & video AI features</li>
+                                <li>Personalized recommendations engine</li>
+                                <li>Predictive job demand system</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Use Cases -->
+        <div class="use-cases-section">
+            <h2 style="color: #667eea; margin-bottom: 20px; font-size: 24px;">💡 Real-World AI Use Cases</h2>
+
+            <div class="use-cases-grid">
+                <div class="use-case-card">
+                    <div class="icon">🔍</div>
+                    <h4>Smart Job-Worker Pairing</h4>
+                    <p>When an emergency plumbing job is posted, AI analyzes 500+ workers and recommends top 5 based on location, skills, availability, and past performance.</p>
+                    <div class="use-case-example">
+                        "Job filled in 3 minutes instead of average 30 minutes"
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <div class="icon">💵</div>
+                    <h4>Fair Price Estimation</h4>
+                    <p>AI recommends ₹1,200 for a ceiling repair based on location (city center = 20% premium), time (evening = 15% increase), and demand trends.</p>
+                    <div class="use-case-example">
+                        "Fair pricing reduces disputes by 60%"
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <div class="icon">🛡️</div>
+                    <h4>Fraud Prevention</h4>
+                    <p>System detects suspicious pattern: new account, max budget job, no profile verification. Flags as high-risk and triggers additional verification.</p>
+                    <div class="use-case-example">
+                        "Prevents estimated ₹10L+ in annual fraud"
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <div class="icon">⏱️</div>
+                    <h4>Accurate Time Predictions</h4>
+                    <p>For painting job, AI predicts 4.5 hours based on area size, complexity, worker experience, and historical data from 1000+ similar jobs.</p>
+                    <div class="use-case-example">
+                        "Prediction accuracy: 92% within ±30 minutes"
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <div class="icon">✅</div>
+                    <h4>Auto Job Verification</h4>
+                    <p>Worker submits 5 photos of completed electrical work. Image recognition verifies completion quality and safety standards automatically.</p>
+                    <div class="use-case-example">
+                        "Instant verification without manual review"
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <div class="icon">💬</div>
+                    <h4>Instant Customer Support</h4>
+                    <p>User asks "How do I request payment withdrawal?" Chatbot instantly provides 3-step process, links, and FAQs in real-time.</p>
+                    <div class="use-case-example">
+                        "90% support queries resolved without human intervention"
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Implementation Approach -->
+        <div class="implementation-section">
+            <h2 style="color: #667eea; margin-bottom: 20px; font-size: 24px;">🛠️ Implementation Approach</h2>
+
+            <div class="implementation-grid">
+                <div class="impl-card">
+                    <h4>Data Collection</h4>
+                    <p>Gathering historical data from jobs, workers, ratings, and transactions to train ML models.</p>
+                    <ul>
+                        <li>Job completion data</li>
+                        <li>Worker performance metrics</li>
+                        <li>Customer satisfaction scores</li>
+                        <li>Transaction patterns</li>
+                        <li>User behavior logs</li>
+                    </ul>
+                </div>
+
+                <div class="impl-card">
+                    <h4>Model Development</h4>
+                    <p>Creating and training machine learning models using Python, TensorFlow, and scikit-learn.</p>
+                    <ul>
+                        <li>Supervised learning models</li>
+                        <li>Unsupervised clustering</li>
+                        <li>Neural networks</li>
+                        <li>Decision trees & forests</li>
+                        <li>NLP models for chatbot</li>
+                    </ul>
+                </div>
+
+                <div class="impl-card">
+                    <h4>Testing & Validation</h4>
+                    <p>Rigorous testing with historical data and A/B testing with real users before production deployment.</p>
+                    <ul>
+                        <li>Model accuracy testing</li>
+                        <li>Performance benchmarking</li>
+                        <li>A/B testing with users</li>
+                        <li>Bias detection & correction</li>
+                        <li>Quality assurance</li>
+                    </ul>
+                </div>
+
+                <div class="impl-card">
+                    <h4>API Integration</h4>
+                    <p>Exposing ML models through APIs and integrating with platform services.</p>
+                    <ul>
+                        <li>RESTful API endpoints</li>
+                        <li>Real-time inference</li>
+                        <li>Batch processing jobs</li>
+                        <li>Caching for performance</li>
+                        <li>Monitoring & alerts</li>
+                    </ul>
+                </div>
+
+                <div class="impl-card">
+                    <h4>Monitoring & Optimization</h4>
+                    <p>Continuous monitoring of model performance and retraining with new data.</p>
+                    <ul>
+                        <li>Performance dashboards</li>
+                        <li>Anomaly detection</li>
+                        <li>Regular model retraining</li>
+                        <li>Feedback loops</li>
+                        <li>Continuous improvement</li>
+                    </ul>
+                </div>
+
+                <div class="impl-card">
+                    <h4>User Communication</h4>
+                    <p>Transparent communication with users about AI features and how they benefit them.</p>
+                    <ul>
+                        <li>Feature announcements</li>
+                        <li>User education</li>
+                        <li>Transparency reports</li>
+                        <li>Privacy assurance</li>
+                        <li>Feedback channels</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Stack for AI -->
+        <div class="tech-stack-ai">
+            <h2 style="color: #667eea; margin-bottom: 20px; font-size: 24px;">⚙️ AI/ML Technology Stack</h2>
+
+            <div class="tech-category">
+                <h4>Machine Learning Frameworks</h4>
+                <div class="tech-items">
+                    <span class="tech-badge">TensorFlow</span>
+                    <span class="tech-badge">PyTorch</span>
+                    <span class="tech-badge">Scikit-learn</span>
+                    <span class="tech-badge">XGBoost</span>
+                    <span class="tech-badge">LightGBM</span>
+                    <span class="tech-badge">Keras</span>
+                </div>
+            </div>
+
+            <div class="tech-category">
+                <h4>NLP & Chatbot</h4>
+                <div class="tech-items">
+                    <span class="tech-badge">NLTK</span>
+                    <span class="tech-badge">SpaCy</span>
+                    <span class="tech-badge">Transformers</span>
+                    <span class="tech-badge">GPT APIs</span>
+                    <span class="tech-badge">Rasa Framework</span>
+                    <span class="tech-badge">BERT</span>
+                </div>
+            </div>
+
+            <div class="tech-category">
+                <h4>Computer Vision</h4>
+                <div class="tech-items">
+                    <span class="tech-badge">OpenCV</span>
+                    <span class="tech-badge">Pillow</span>
+                    <span class="tech-badge">YOLO</span>
+                    <span class="tech-badge">Detectron2</span>
+                    <span class="tech-badge">TensorFlow Vision</span>
+                </div>
+            </div>
+
+            <div class="tech-category">
+                <h4>Data Processing & Analytics</h4>
+                <div class="tech-items">
+                    <span class="tech-badge">Pandas</span>
+                    <span class="tech-badge">NumPy</span>
+                    <span class="tech-badge">Spark</span>
+                    <span class="tech-badge">Jupyter</span>
+                    <span class="tech-badge">Tableau</span>
+                    <span class="tech-badge">Plotly</span>
+                </div>
+            </div>
+
+            <div class="tech-category">
+                <h4>Deployment & Serving</h4>
+                <div class="tech-items">
+                    <span class="tech-badge">Docker</span>
+                    <span class="tech-badge">Kubernetes</span>
+                    <span class="tech-badge">TensorFlow Serving</span>
+                    <span class="tech-badge">Seldon Core</span>
+                    <span class="tech-badge">AWS SageMaker</span>
+                    <span class="tech-badge">MLflow</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Benefits Summary -->
+        <div class="benefits-section">
+            <h2 style="color: #667eea; margin-bottom: 20px; font-size: 24px;">🎯 Key Benefits for Users</h2>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="icon">⚡</div>
+                    <h4>Faster Matching</h4>
+                    <p>AI-powered matching reduces job assignment time from hours to minutes, ensuring faster service delivery.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="icon">💰</div>
+                    <h4>Better Pricing</h4>
+                    <p>Fair price recommendations maximize earnings for workers while keeping costs competitive for employers.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="icon">🛡️</div>
+                    <h4>Enhanced Safety</h4>
+                    <p>Advanced fraud detection and verification protects all users from scams and dishonest transactions.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="icon">📱</div>
+                    <h4>Better UX</h4>
+                    <p>AI chatbot and personalized recommendations provide 24/7 support and tailored experiences for each user.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="icon">📊</div>
+                    <h4>Smart Insights</h4>
+                    <p>Predictive analytics help workers plan earnings and employers optimize their service requests.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="icon">✅</div>
+                    <h4>Quality Assurance</h4>
+                    <p>Automated verification and skill assessment ensure consistent high-quality service delivery across the platform.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>🚀 Service Management System v1.0 | AI Features Roadmap</p>
+            <p style="margin-top: 10px; font-size: 12px;">© 2024 ServiceHub. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
