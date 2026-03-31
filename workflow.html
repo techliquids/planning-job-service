@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflows - Job Boy Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B35;
+            --secondary: #004E89;
+            --accent: #1E8449;
+            --light: #F8F9FA;
+            --dark: #1A1A1A;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: #f5f5f5;
+        }
+
+        .navbar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .diagram-container {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid var(--primary);
+            overflow-x: auto;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+            min-width: 100%;
+        }
+
+        .flow-description {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            margin: 1.5rem 0;
+        }
+
+        .flow-description h4 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .flow-description p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .step-list li {
+            padding: 0.6rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .step-list li:before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .parallel-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .step-card {
+            background: linear-gradient(135deg, var(--primary), #ff8a50);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+        }
+
+        .step-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-card p {
+            font-size: 0.9rem;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            line-height: 40px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0 2rem 4rem;
+            margin: 2rem 0;
+        }
+
+        .timeline-event {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .timeline-event:before {
+            content: "";
+            position: absolute;
+            left: -3.8rem;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary);
+        }
+
+        .timeline-event:after {
+            content: "";
+            position: absolute;
+            left: -3.3rem;
+            top: 20px;
+            width: 3px;
+            height: calc(100% + 2rem);
+            background: #ddd;
+        }
+
+        .timeline-event:last-child:after {
+            display: none;
+        }
+
+        .timeline-event h4 {
+            color: var(--secondary);
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-event p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-event .time {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .decision-tree {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .decision {
+            margin: 1rem 0;
+            padding-left: 2rem;
+            border-left: 3px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .decision strong {
+            color: var(--secondary);
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .parallel-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .timeline {
+                padding-left: 2rem;
+            }
+
+            .timeline-event:before {
+                left: -1.8rem;
+            }
+
+            .timeline-event:after {
+                left: -1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="index.html" class="logo">🧾 Job Boy</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="overview.html">Overview</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="features.html">Features</a></li>
+                <li><a href="workflow.html" style="color: var(--primary); font-weight: 700;">Workflows</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Job Booking Workflow -->
+        <div class="section">
+            <h2 class="section-title">📋 Complete Job Booking Workflow</h2>
+
+            <div class="diagram-container">
+                <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Title -->
+                    <text x="600" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#004E89">Job Booking Lifecycle - Complete Flow</text>
+
+                    <!-- Employer Path -->
+                    <g>
+                        <text x="100" y="80" font-size="16" font-weight="bold" fill="#FF6B35">EMPLOYER JOURNEY</text>
+                        
+                        <!-- 1. Search -->
+                        <rect x="20" y="120" width="140" height="60" fill="#FF6B35" stroke="#ff5520" stroke-width="2" rx="5"/>
+                        <text x="90" y="140" font-size="12" font-weight="bold" text-anchor="middle" fill="white">1. Search</text>
+                        <text x="90" y="155" font-size="10" text-anchor="middle" fill="white">Workers</text>
+                        <text x="90" y="168" font-size="10" text-anchor="middle" fill="white">by Location</text>
+
+                        <!-- 2. Select & Request -->
+                        <rect x="200" y="120" width="140" height="60" fill="#FF6B35" stroke="#ff5520" stroke-width="2" rx="5"/>
+                        <text x="270" y="140" font-size="12" font-weight="bold" text-anchor="middle" fill="white">2. Select</text>
+                        <text x="270" y="155" font-size="10" text-anchor="middle" fill="white">Worker &</text>
+                        <text x="270" y="168" font-size="10" text-anchor="middle" fill="white">Create Job</text>
+
+                        <!-- 3. Payment -->
+                        <rect x="380" y="120" width="140" height="60" fill="#FF6B35" stroke="#ff5520" stroke-width="2" rx="5"/>
+                        <text x="450" y="140" font-size="12" font-weight="bold" text-anchor="middle" fill="white">3. Payment</text>
+                        <text x="450" y="155" font-size="10" text-anchor="middle" fill="white">Confirmation</text>
+                        <text x="450" y="168" font-size="10" text-anchor="middle" fill="white">& Invoice</text>
+
+                        <!-- 4. Track -->
+                        <rect x="560" y="120" width="140" height="60" fill="#FF6B35" stroke="#ff5520" stroke-width="2" rx="5"/>
+                        <text x="630" y="140" font-size="12" font-weight="bold" text-anchor="middle" fill="white">4. Track</text>
+                        <text x="630" y="155" font-size="10" text-anchor="middle" fill="white">Worker</text>
+                        <text x="630" y="168" font-size="10" text-anchor="middle" fill="white">Location</text>
+
+                        <!-- 5. Rate & Review -->
+                        <rect x="740" y="120" width="140" height="60" fill="#FF6B35" stroke="#ff5520" stroke-width="2" rx="5"/>
+                        <text x="810" y="140" font-size="12" font-weight="bold" text-anchor="middle" fill="white">5. Rate &</text>
+                        <text x="810" y="155" font-size="10" text-anchor="middle" fill="white">Review</text>
+                        <text x="810" y="168" font-size="10" text-anchor="middle" fill="white">Worker</text>
+
+                        <!-- Arrows -->
+                        <path d="M 160 150 L 200 150" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                        <path d="M 340 150 L 380 150" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                        <path d="M 520 150 L 560 150" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                        <path d="M 700 150 L 740 150" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    </g>
+
+                    <!-- Worker Path -->
+                    <g>
+                        <text x="100" y="280" font-size="16" font-weight="bold" fill="#004E89">WORKER JOURNEY</text>
+                        
+                        <!-- 1. Notification -->
+                        <rect x="20" y="320" width="140" height="60" fill="#004E89" stroke="#003360" stroke-width="2" rx="5"/>
+                        <text x="90" y="340" font-size="12" font-weight="bold" text-anchor="middle" fill="white">1. Job</text>
+                        <text x="90" y="355" font-size="10" text-anchor="middle" fill="white">Notification</text>
+                        <text x="90" y="368" font-size="10" text-anchor="middle" fill="white">(60 sec)</text>
+
+                        <!-- 2. Accept Job -->
+                        <rect x="200" y="320" width="140" height="60" fill="#004E89" stroke="#003360" stroke-width="2" rx="5"/>
+                        <text x="270" y="340" font-size="12" font-weight="bold" text-anchor="middle" fill="white">2. Accept</text>
+                        <text x="270" y="355" font-size="10" text-anchor="middle" fill="white">Job</text>
+                        <text x="270" y="368" font-size="10" text-anchor="middle" fill="white">Request</text>
+
+                        <!-- 3. Start Job -->
+                        <rect x="380" y="320" width="140" height="60" fill="#004E89" stroke="#003360" stroke-width="2" rx="5"/>
+                        <text x="450" y="340" font-size="12" font-weight="bold" text-anchor="middle" fill="white">3. Start</text>
+                        <text x="450" y="355" font-size="10" text-anchor="middle" fill="white">Job &</text>
+                        <text x="450" y="368" font-size="10" text-anchor="middle" fill="white">Share Location</text>
+
+                        <!-- 4. Complete Job -->
+                        <rect x="560" y="320" width="140" height="60" fill="#004E89" stroke="#003360" stroke-width="2" rx="5"/>
+                        <text x="630" y="340" font-size="12" font-weight="bold" text-anchor="middle" fill="white">4. Complete</text>
+                        <text x="630" y="355" font-size="10" text-anchor="middle" fill="white">Job &</text>
+                        <text x="630" y="368" font-size="10" text-anchor="middle" fill="white">Upload Proof</text>
+
+                        <!-- 5. Receive Payment -->
+                        <rect x="740" y="320" width="140" height="60" fill="#004E89" stroke="#003360" stroke-width="2" rx="5"/>
+                        <text x="810" y="340" font-size="12" font-weight="bold" text-anchor="middle" fill="white">5. Receive</text>
+                        <text x="810" y="355" font-size="10" text-anchor="middle" fill="white">Payment in</text>
+                        <text x="810" y="368" font-size="10" text-anchor="middle" fill="white">Wallet</text>
+
+                        <!-- Arrows -->
+                        <path d="M 160 350 L 200 350" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                        <path d="M 340 350 L 380 350" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                        <path d="M 520 350 L 560 350" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                        <path d="M 700 350 L 740 350" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    </g>
+
+                    <!-- Parallel Events -->
+                    <g>
+                        <text x="100" y="480" font-size="16" font-weight="bold" fill="#1E8449">PARALLEL EVENTS</text>
+                        
+                        <!-- Real-time -->
+                        <rect x="20" y="520" width="140" height="60" fill="#1E8449" stroke="#0d5c36" stroke-width="2" rx="5"/>
+                        <text x="90" y="540" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Real-time</text>
+                        <text x="90" y="555" font-size="10" text-anchor="middle" fill="white">Location</text>
+                        <text x="90" y="568" font-size="10" text-anchor="middle" fill="white">Updates</text>
+
+                        <!-- Chat -->
+                        <rect x="200" y="520" width="140" height="60" fill="#1E8449" stroke="#0d5c36" stroke-width="2" rx="5"/>
+                        <text x="270" y="540" font-size="12" font-weight="bold" text-anchor="middle" fill="white">In-app</text>
+                        <text x="270" y="555" font-size="10" text-anchor="middle" fill="white">Chat &</text>
+                        <text x="270" y="568" font-size="10" text-anchor="middle" fill="white">Support</text>
+
+                        <!-- Notifications -->
+                        <rect x="380" y="520" width="140" height="60" fill="#1E8449" stroke="#0d5c36" stroke-width="2" rx="5"/>
+                        <text x="450" y="540" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Push</text>
+                        <text x="450" y="555" font-size="10" text-anchor="middle" fill="white">Notifications</text>
+                        <text x="450" y="568" font-size="10" text-anchor="middle" fill="white">Updates</text>
+
+                        <!-- Ratings -->
+                        <rect x="560" y="520" width="140" height="60" fill="#1E8449" stroke="#0d5c36" stroke-width="2" rx="5"/>
+                        <text x="630" y="540" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Rating &</text>
+                        <text x="630" y="555" font-size="10" text-anchor="middle" fill="white">Dispute</text>
+                        <text x="630" y="568" font-size="10" text-anchor="middle" fill="white">Management</text>
+                    </g>
+
+                    <!-- Status -->
+                    <g>
+                        <text x="100" y="680" font-size="16" font-weight="bold" fill="#333">JOB STATUS PROGRESSION</text>
+                        
+                        <rect x="20" y="720" width="110" height="40" fill="#FFE0B2" stroke="#FF9800" stroke-width="1" rx="3"/>
+                        <text x="75" y="745" font-size="11" font-weight="bold" text-anchor="middle">Pending</text>
+
+                        <text x="150" y="745" font-size="18" fill="#333">→</text>
+
+                        <rect x="180" y="720" width="110" height="40" fill="#B3E5FC" stroke="#03A9F4" stroke-width="1" rx="3"/>
+                        <text x="235" y="745" font-size="11" font-weight="bold" text-anchor="middle">Accepted</text>
+
+                        <text x="310" y="745" font-size="18" fill="#333">→</text>
+
+                        <rect x="340" y="720" width="110" height="40" fill="#C8E6C9" stroke="#4CAF50" stroke-width="1" rx="3"/>
+                        <text x="395" y="745" font-size="11" font-weight="bold" text-anchor="middle">In Progress</text>
+
+                        <text x="470" y="745" font-size="18" fill="#333">→</text>
+
+                        <rect x="500" y="720" width="110" height="40" fill="#F8BBD0" stroke="#E91E63" stroke-width="1" rx="3"/>
+                        <text x="555" y="745" font-size="11" font-weight="bold" text-anchor="middle">Completed</text>
+
+                        <text x="630" y="745" font-size="18" fill="#333">→</text>
+
+                        <rect x="660" y="720" width="110" height="40" fill="#D1C4E9" stroke="#673AB7" stroke-width="1" rx="3"/>
+                        <text x="715" y="745" font-size="11" font-weight="bold" text-anchor="middle">Paid</text>
+                    </g>
+
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                            <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <div class="flow-description">
+                <h4>📌 Booking Flow Summary</h4>
+                <p>The complete job booking process involves coordinated steps from both employer and worker, with parallel real-time updates and communications. The entire process typically takes 15-60 minutes from job posting to completion.</p>
+            </div>
+        </div>
+
+        <!-- Detailed Booking Steps -->
+        <div class="section">
+            <h2 class="section-title">📝 Detailed Booking Steps</h2>
+
+            <h3 style="color: var(--secondary); margin: 2rem 0 1rem 0; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary);">Step-by-Step Process</h3>
+
+            <div class="timeline">
+                <div class="timeline-event">
+                    <h4>STEP 1: Employer Searches Workers</h4>
+                    <p>Employer opens the app and searches for available workers by service type and location</p>
+                    <ul class="step-list" style="list-style: none; margin-top: 0.5rem; padding-left: 0;">
+                        <li style="padding-left: 0;">📍 GPS location determines nearby workers</li>
+                        <li style="padding-left: 0;">🎯 Filters by ratings, distance, hourly rate</li>
+                        <li style="padding-left: 0;">💡 AI recommendations based on previous jobs</li>
+                    </ul>
+                    <div class="time">Estimated Time: 2-3 minutes</div>
+                </div>
+
+                <div class="timeline-event">
+                    <h4>STEP 2: Select Worker & Create Job</h4>
+                    <p>Employer selects a worker and provides job details</p>
+                    <ul class="step-list" style="list-style: none; margin-top: 0.5rem; padding-left: 0;">
+                        <li style="padding-left: 0;">✍️ Detailed job description entered</li>
+                        <li style="padding-left: 0;">📸 Upload images/videos of the problem</li>
+                        <li style="padding-left: 0;">📅 Select date, time, and duration</li>
+                        <li style="padding-left: 0;">💰 View estimated cost</li>
+                    </ul>
+                    <div class="time">Estimated Time: 3-5 minutes</div>
+                </div>
+
+                <div class="timeline-event">
+                    <h4>STEP 3: Payment Processing</h4>
+                    <p>Employer makes payment through preferred channel</p>
+                    <ul class="step-list" style="list-style: none; margin-top: 0.5rem; padding-left: 0;">
+                        <li style="padding-left: 0;">💳 Select payment method (UPI/Card/Wallet)</li>
+                        <li style="padding-left: 0;">✅ Payment authorized and confirmed</li>
+                        <li style="padding-left: 0;">📧 Invoice generated automatically</li>
+                        <li style="padding-left: 0;">🔔 Notification sent to worker</li>
+                    </ul>
+                    <div class="time">Estimated Time: 1-2 minutes</div>
+                </div>
+
+                <div class="timeline-event">
+                    <h4>STEP 4: Worker Receives & Accepts</h4>
+                    <p>Worker gets notification and decides to accept/reject</p>
+                    <ul class="step-list" style="list-style: none; margin-top: 0.5rem; padding-left: 0;">
+                        <li style="padding-left: 0;">🔔 Push notification with 60-second timer</li>
+                        <li style="padding-left: 0;">👁️ Worker reviews job details, location, payment</li>
+                        <li style="padding-left: 0;">✅ Worker accepts or rejects job</li>
+                        <li style="padding-left: 0;">📍 GPS location shared with employer</li>
+                    </ul>
+                    <div class="time">Estimated Time: 1-2 minutes</div>
+                </div>
+
+                <div class="timeline-event">
+                    <h4>STEP 5: Worker Arrives & Starts Job</h4>
+                    <p>Worker travels to location and begins work</p>
+                    <ul class="step-list" style="list-style: none; margin-top: 0.5rem; padding-left: 0;">
+                        <li style="padding-left: 0;">🗺️ GPS navigation to job location</li>
+                        <li style="padding-left: 0;">🟢 Employer receives ETA and live tracking</li>
+                        <li style="padding-left: 0;">▶️ Worker clicks "Start Job" button</li>
+                        <li style="padding-left: 0;">⏱️ Timer starts for billing</li>
+                    </ul>
+                    <div class="time">Estimated Time: 5-20 minutes (travel time)</div>
+                </div>
+
+                <div class="timeline-event">
+                    <h4>STEP 6: Job Execution with Real-time Updates</h4>
+                    <p>Worker performs the service with continuous updates</p>
+                    <ul class="step-list" style="list-style: none; margin-top: 0.5rem; padding-left: 0;">
+                        <li style="padding-left: 0;">💬 In-app chat for coordination</li>
+                        <li style="padding-left: 0;">📸 Worker can share progress photos</li>
+                        <li style="padding-left: 0;">⏸️ Worker can pause/resume if needed</li>
+                        <li style="padding-left: 0;">🔄 Employer gets live updates</li>
+                    </ul>
+                    <div class="time">Estimated Time: 30 min - 8 hours (varies by job)</div>
+                </div>
+
+                <div class="timeline-event">
+                    <h4>STEP 7: Job Completion & Work Proof</h4>
+                    <p>Worker completes job and submits proof</p>
+                    <ul class="step-list" style="list-style: none; margin-top: 0.5rem; padding-left: 0;">
+                        <li style="padding-left: 0;">✅ Click "Complete Job" button</li>
+                        <li style="padding-left: 0;">📸 Upload before-after photos/videos</li>
+                        <li style="padding-left: 0;">📍 GPS location tagged to images</li>
+                        <li style="padding-left: 0;">💵 Payment triggered to worker's wallet</li>
+                    </ul>
+                    <div class="time">Estimated Time: 2-3 minutes</div>
+                </div>
+
+                <div class="timeline-event">
+                    <h4>STEP 8: Employer Verification & Payment</h4>
+                    <p>Employer reviews completed work</p>
+                    <ul class="step-list" style="list-style: none; margin-top: 0.5rem; padding-left: 0;">
+                        <li style="padding-left: 0;">📸 Review work photos and videos</li>
+                        <li style="padding-left: 0;">✅ Accept work or raise dispute</li>
+                        <li style="padding-left: 0;">💳 Final payment settled</li>
+                        <li style="padding-left: 0;">📊 Invoice downloaded</li>
+                    </ul>
+                    <div class="time">Estimated Time: 2-5 minutes</div>
+                </div>
+
+                <div class="timeline-event">
+                    <h4>STEP 9: Rating & Review</h4>
+                    <p>Both parties rate and review each other</p>
+                    <ul class="step-list" style="list-style: none; margin-top: 0.5rem; padding-left: 0;">
+                        <li style="padding-left: 0;">⭐ Employer rates worker (1-5 stars)</li>
+                        <li style="padding-left: 0;">💬 Written feedback provided</li>
+                        <li style="padding-left: 0;">⭐ Worker rates employer</li>
+                        <li style="padding-left: 0;">📊 Ratings impact future bookings</li>
+                    </ul>
+                    <div class="time">Estimated Time: 2-3 minutes</div>
+                </div>
+
+                <div class="timeline-event">
+                    <h4>STEP 10: Job Closed</h4>
+                    <p>Job completed successfully with all records saved</p>
+                    <ul class="step-list" style="list-style: none; margin-top: 0.5rem; padding-left: 0;">
+                        <li style="padding-left: 0;">✅ Job marked as completed</li>
+                        <li style="padding-left: 0;">💾 Complete record stored</li>
+                        <li style="padding-left: 0;">📊 Statistics updated</li>
+                        <li style="padding-left: 0;">🔄 Option to re-book same worker</li>
+                    </ul>
+                    <div class="time">Instant</div>
+                </div>
+            </div>
+
+            <div class="flow-description">
+                <h4>⏱️ Total Time Summary</h4>
+                <p><strong>Quick Service Job (e.g., simple repair):</strong> 30 minutes - 2 hours from search to completion</p>
+                <p><strong>Medium Service Job (e.g., plumbing):</strong> 2 - 8 hours from search to completion</p>
+                <p><strong>Long Service Job (e.g., construction help):</strong> 8+ hours or multiple days</p>
+            </div>
+        </div>
+
+        <!-- Decision Trees -->
+        <div class="section">
+            <h2 class="section-title">🔀 Decision Trees & Branch Scenarios</h2>
+
+            <h3 style="color: var(--secondary); margin: 2rem 0 1rem 0; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary);">Job Acceptance Scenarios</h3>
+
+            <div class="decision-tree">
+                <div class="decision">
+                    <strong>✅ Worker ACCEPTS Job</strong>
+                    <p>→ Job status changes to "Accepted"</p>
+                    <p>→ Worker GPS location shared with employer</p>
+                    <p>→ Employer sees ETA</p>
+                    <p>→ Job proceeds to execution phase</p>
+                </div>
+
+                <div class="decision">
+                    <strong>❌ Worker REJECTS Job</strong>
+                    <p>→ Job marked as "Rejected"</p>
+                    <p>→ Payment held in employer's wallet</p>
+                    <p>→ Job automatically offered to next highest-rated worker</p>
+                    <p>→ Employer notified of rejection</p>
+                    <p>→ Process repeats until acceptance</p>
+                </div>
+
+                <div class="decision">
+                    <strong>⏱️ Worker TIMEOUT (No response in 60 sec)</strong>
+                    <p>→ Job auto-rejected (no penalty to worker)</p>
+                    <p>→ Offered to next worker immediately</p>
+                    <p>→ Employer updated with new ETA</p>
+                </div>
+            </div>
+
+            <h3 style="color: var(--secondary); margin: 2rem 0 1rem 0; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary);">Job Completion Scenarios</h3>
+
+            <div class="decision-tree">
+                <div class="decision">
+                    <strong>✅ Employer ACCEPTS Work</strong>
+                    <p>→ Payment transferred to worker</p>
+                    <p>→ Job marked as "Completed"</p>
+                    <p>→ Rating prompt appears</p>
+                    <p>→ Invoice finalized</p>
+                </div>
+
+                <div class="decision">
+                    <strong>🚨 Employer DISPUTES Work</strong>
+                    <p>→ Job status: "Dispute Raised"</p>
+                    <p>→ Payment held in escrow</p>
+                    <p>→ Admin investigation initiated</p>
+                    <p>→ Evidence review (photos, messages, location)</p>
+                    <p>→ Resolution: Refund or Full/Partial Payment</p>
+                </div>
+
+                <div class="decision">
+                    <strong>❌ Worker ABANDONS Job</strong>
+                    <p>→ Job status: "Abandoned"</p>
+                    <p>→ Auto-refund to employer</p>
+                    <p>→ Worker receives penalty</p>
+                    <p>→ Job offered to next worker</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Flow -->
+        <div class="section">
+            <h2 class="section-title">💳 Payment & Settlement Flow</h2>
+
+            <div class="diagram-container">
+                <svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg">
+                    <text x="500" y="30" font-size="22" font-weight="bold" text-anchor="middle" fill="#004E89">Payment & Settlement Workflow</text>
+
+                    <!-- Employer -->
+                    <circle cx="100" cy="100" r="35" fill="#FF6B35"/>
+                    <text x="100" y="105" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Employer</text>
+
+                    <!-- Payment Gateway -->
+                    <rect x="200" y="65" width="120" height="70" fill="#2196F3" stroke="#1565C0" stroke-width="2" rx="5"/>
+                    <text x="260" y="105" font-size="11" font-weight="bold" text-anchor="middle" fill="white">Payment</text>
+                    <text x="260" y="120" font-size="11" font-weight="bold" text-anchor="middle" fill="white">Gateway</text>
+
+                    <!-- Platform Wallet -->
+                    <rect x="380" y="65" width="120" height="70" fill="#4CAF50" stroke="#2E7D32" stroke-width="2" rx="5"/>
+                    <text x="440" y="105" font-size="11" font-weight="bold" text-anchor="middle" fill="white">Platform</text>
+                    <text x="440" y="120" font-size="11" font-weight="bold" text-anchor="middle" fill="white">Escrow</text>
+
+                    <!-- Worker Wallet -->
+                    <rect x="560" y="65" width="120" height="70" fill="#FF9800" stroke="#E65100" stroke-width="2" rx="5"/>
+                    <text x="620" y="105" font-size="11" font-weight="bold" text-anchor="middle" fill="white">Worker</text>
+                    <text x="620" y="120" font-size="11" font-weight="bold" text-anchor="middle" fill="white">Wallet</text>
+
+                    <!-- Worker Bank -->
+                    <circle cx="780" cy="100" r="35" fill="#FF6B35"/>
+                    <text x="780" y="105" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Worker</text>
+                    <text x="780" y="120" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Bank</text>
+
+                    <!-- Arrows -->
+                    <path d="M 135 100 L 200 100" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    <text x="165" y="85" font-size="10" fill="#FF6B35" font-weight="bold">Pay</text>
+
+                    <path d="M 320 100 L 380 100" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    <text x="345" y="85" font-size="10" fill="#4CAF50" font-weight="bold">Hold</text>
+
+                    <path d="M 500 100 L 560 100" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    <text x="525" y="85" font-size="10" fill="#FF9800" font-weight="bold">Transfer</text>
+
+                    <path d="M 680 100 L 745 100" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    <text x="705" y="85" font-size="10" fill="#FF6B35" font-weight="bold">Withdraw</text>
+
+                    <!-- Detailed flows below -->
+                    <g>
+                        <text x="50" y="240" font-size="13" font-weight="bold" fill="#004E89">Flow Details:</text>
+
+                        <text x="50" y="270" font-size="11" fill="#333"><tspan font-weight="bold">1. Employer Payment:</tspan> UPI/Card/Wallet → Payment Gateway validates</text>
+                        <text x="50" y="290" font-size="11" fill="#333"><tspan font-weight="bold">2. Platform Escrow:</tspan> Amount held securely until job completion</text>
+                        <text x="50" y="310" font-size="11" fill="#333"><tspan font-weight="bold">3. Worker Wallet:</tspan> On job completion, auto-transfer to worker wallet</text>
+                        <text x="50" y="330" font-size="11" fill="#333"><tspan font-weight="bold">4. Withdrawal:</tspan> Worker can withdraw to bank account instantly or keep in wallet</text>
+                        <text x="50" y="350" font-size="11" fill="#333"><tspan font-weight="bold">5. Dispute:</tspan> If disputed, payment held until resolution by admin</text>
+                    </g>
+
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                            <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Real-time Communication -->
+        <div class="section">
+            <h2 class="section-title">🔄 Real-time Communication Protocol</h2>
+
+            <div class="parallel-steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h4>Location Streaming</h4>
+                    <p>Worker's GPS location updated to employer every 5-10 seconds during job execution via WebSocket connection</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h4>Status Updates</h4>
+                    <p>Job status changes (accepted, started, completed) pushed instantly to both parties via Firebase notifications</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h4>In-app Chat</h4>
+                    <p>Bidirectional messaging with message persistence, read receipts, and typing indicators</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h4>Photo Uploads</h4>
+                    <p>Real-time photo sharing with GPS tagging and timestamp verification for work proof</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Handling & Edge Cases -->
+        <div class="section">
+            <h2 class="section-title">⚠️ Error Handling & Edge Cases</h2>
+
+            <div class="flow-description">
+                <h4>📱 Network Disconnection</h4>
+                <p><strong>Scenario:</strong> Worker loses internet during job</p>
+                <p><strong>Handling:</strong> GPS location cached locally, re-synced when connection restored. Job timer continues. No data loss.</p>
+            </div>
+
+            <div class="flow-description">
+                <h4>💳 Payment Failure</h4>
+                <p><strong>Scenario:</strong> Payment gateway declines transaction</p>
+                <p><strong>Handling:</strong> Employer notified immediately, job creation cancelled, retry option offered. No worker notification if payment fails.</p>
+            </div>
+
+            <div class="flow-description">
+                <h4>🚫 Worker Cancel After Acceptance</h4>
+                <p><strong>Scenario:</strong> Worker accepts job but cancels before arrival</p>
+                <p><strong>Handling:</strong> Job status reverted, payment refunded, job offered to next worker. Worker receives penalty on cancellation rate.</p>
+            </div>
+
+            <div class="flow-description">
+                <h4>📍 GPS Spoofing Detection</h4>
+                <p><strong>Scenario:</strong> Worker claims to be at job location but isn't</p>
+                <p><strong>Handling:</strong> System validates location consistency, cross-checks with photos. Suspicious behavior triggers admin review.</p>
+            </div>
+
+            <div class="flow-description">
+                <h4>⏱️ Extended Job Duration</h4>
+                <p><strong>Scenario:</strong> Job takes longer than estimated</p>
+                <p><strong>Handling:</strong> Worker can request extension, employer approves/rejects. Payment adjusted automatically based on hourly rate.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Job Boy Platform. All rights reserved.</p>
+    </footer>
+</body>
+</html>

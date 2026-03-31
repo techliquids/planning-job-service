@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security & Compliance - Job Boy Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B35;
+            --secondary: #004E89;
+            --accent: #1E8449;
+            --light: #F8F9FA;
+            --dark: #1A1A1A;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: #f5f5f5;
+        }
+
+        .navbar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .subsection-title {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin: 2rem 0 1.5rem 0;
+            padding-left: 1rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .security-pillar {
+            background: linear-gradient(135deg, var(--primary), #ff8a50);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+
+        .security-pillar:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.3);
+        }
+
+        .security-pillar h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .security-pillar ul {
+            list-style: none;
+            column-count: 2;
+            column-gap: 2rem;
+        }
+
+        .security-pillar li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .security-pillar li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .threat-model {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .threat-card {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #d32f2f;
+        }
+
+        .threat-card h4 {
+            color: #d32f2f;
+            margin-bottom: 0.5rem;
+        }
+
+        .threat-card p {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+        .threat-card .mitigation {
+            background: white;
+            padding: 0.8rem;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .compliance-badge {
+            display: inline-block;
+            background: var(--light);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin: 0.5rem;
+            border-left: 4px solid var(--primary);
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .data-flow {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            border: 2px solid var(--primary);
+        }
+
+        .data-flow h4 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .data-flow .step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .data-flow .step-number {
+            width: 35px;
+            height: 35px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .data-flow .step-desc {
+            flex: 1;
+            color: #555;
+        }
+
+        .checklist {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .checklist-item {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .checklist-item:before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .checklist-item span {
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .threat-model {
+                grid-template-columns: 1fr;
+            }
+
+            .checklist {
+                grid-template-columns: 1fr;
+            }
+
+            .security-pillar ul {
+                column-count: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="index.html" class="logo">🧾 Job Boy</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="overview.html">Overview</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="features.html">Features</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Overview -->
+        <div class="section">
+            <h2 class="section-title">🔐 Security & Compliance Framework</h2>
+
+            <p style="font-size: 1.1rem; color: #555; margin-bottom: 2rem; line-height: 1.8;">
+                Job Boy implements enterprise-grade security across authentication, data protection, payment processing, 
+                and regulatory compliance. Security is not an afterthought but a core architectural principle, embedded at 
+                every layer of the platform.
+            </p>
+
+            <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); padding: 2rem; border-radius: 10px; border-left: 4px solid var(--secondary);">
+                <h4 style="color: var(--secondary); margin-bottom: 1rem;">🛡️ Security Pillars</h4>
+                <p style="color: #555;">We follow a defense-in-depth approach across 5 critical areas: Authentication, Data Protection, Payment Security, Fraud Prevention, and Regulatory Compliance.</p>
+            </div>
+        </div>
+
+        <!-- Authentication -->
+        <div class="section">
+            <h2 class="section-title">🔑 Authentication & Access Control</h2>
+
+            <div class="security-pillar">
+                <h3>User Authentication</h3>
+                <ul>
+                    <li>Mobile OTP via SMS (6-digit codes, 10-minute expiry)</li>
+                    <li>Email verification with unique tokens</li>
+                    <li>Google OAuth 2.0 for social login</li>
+                    <li>Session tokens with 24-hour expiration</li>
+                    <li>Automatic logout on inactivity (30 minutes)</li>
+                    <li>Password hashing with bcrypt (12 rounds)</li>
+                </ul>
+            </div>
+
+            <div class="security-pillar" style="background: linear-gradient(135deg, #4CAF50, #66BB6A);">
+                <h3>Access Control</h3>
+                <ul>
+                    <li>Role-based access control (Employer, Worker, Admin)</li>
+                    <li>JWT token-based authorization</li>
+                    <li>Two-factor authentication (2FA) for sensitive operations</li>
+                    <li>Device fingerprinting for multi-device detection</li>
+                    <li>Rate limiting to prevent brute force attacks</li>
+                    <li>API key management for integrations</li>
+                </ul>
+            </div>
+
+            <h3 class="subsection-title">Authentication Flow</h3>
+            <div class="data-flow">
+                <h4>Secure Login Process</h4>
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-desc"><strong>User enters phone number</strong> - Input validation on client & server</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-desc"><strong>OTP generated & sent via SMS</strong> - Expires in 10 minutes, single use</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-desc"><strong>User submits OTP</strong> - Server validates against database</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-desc"><strong>JWT token issued</strong> - Contains user ID, role, permissions</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-desc"><strong>Token stored securely</strong> - In secure storage, not localStorage</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Protection -->
+        <div class="section">
+            <h2 class="section-title">🔒 Data Protection & Encryption</h2>
+
+            <div class="security-pillar" style="background: linear-gradient(135deg, #9C27B0, #BA68C8);">
+                <h3>Encryption Standards</h3>
+                <ul>
+                    <li>TLS 1.3 for all API communications</li>
+                    <li>AES-256 encryption for data at rest</li>
+                    <li>Database encryption with AWS KMS</li>
+                    <li>Field-level encryption for sensitive data (phone, SSN)</li>
+                    <li>End-to-end encryption for chat messages</li>
+                    <li>HTTPS only (no HTTP traffic)</li>
+                </ul>
+            </div>
+
+            <h3 class="subsection-title">Data Classification & Handling</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                <div style="background: #fff3e0; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #FF9800;">
+                    <h4 style="color: #E65100; margin-bottom: 1rem;">🟠 Sensitive Data</h4>
+                    <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">Phone, Email, SSN, Bank Account, Payment info</p>
+                    <p style="font-size: 0.85rem; color: #666;"><strong>Protection:</strong> Field-level encryption, tokenization, masked in logs</p>
+                </div>
+                <div style="background: #f3e5f5; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #9C27B0;">
+                    <h4 style="color: #6A1B9A; margin-bottom: 1rem;">🟣 PII Data</h4>
+                    <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">Name, Address, Photos, Work history</p>
+                    <p style="font-size: 0.85rem; color: #666;"><strong>Protection:</strong> Encrypted at rest, access logs, audit trail</p>
+                </div>
+            </div>
+
+            <h3 class="subsection-title">Data Residency & Privacy</h3>
+            <div class="checklist">
+                <div class="checklist-item">
+                    <span>All Indian customer data stored in AWS Mumbai region</span>
+                </div>
+                <div class="checklist-item">
+                    <span>GDPR compliance for EU users (data processed in EU)</span>
+                </div>
+                <div class="checklist-item">
+                    <span>Data deletion requests honored within 30 days</span>
+                </div>
+                <div class="checklist-item">
+                    <span>Regular backup (daily), tested recovery procedures</span>
+                </div>
+                <div class="checklist-item">
+                    <span>Data access logs maintained for 1 year</span>
+                </div>
+                <div class="checklist-item">
+                    <span>Anonymization of data for analytics</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Security -->
+        <div class="section">
+            <h2 class="section-title">💳 Payment & Financial Security</h2>
+
+            <div class="security-pillar" style="background: linear-gradient(135deg, #2196F3, #42A5F5);">
+                <h3>PCI DSS Compliance</h3>
+                <ul>
+                    <li>Level 1 PCI DSS Certification (highest security standard)</li>
+                    <li>No direct credit card storage - Tokenization via Razorpay</li>
+                    <li>Payment gateway: Razorpay (RBI-approved)</li>
+                    <li>Secure payment forms with CSP headers</li>
+                    <li>3D Secure authentication for card payments</li>
+                    <li>Quarterly security audits & penetration testing</li>
+                </ul>
+            </div>
+
+            <h3 class="subsection-title">Transaction Security</h3>
+            <div class="data-flow">
+                <h4>Secure Payment Flow</h4>
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-desc"><strong>Payment initiated</strong> - Employer selects amount & method</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-desc"><strong>Fraud checks</strong> - AI system analyzes transaction for red flags</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-desc"><strong>Amount held in escrow</strong> - Platform wallet, not withdrawn yet</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-desc"><strong>Job completion</strong> - Worker finishes, submits proof</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-desc"><strong>Payment released</strong> - Funds transferred to worker wallet</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div class="step-desc"><strong>Worker withdrawal</strong> - Can withdraw to bank (next business day)</div>
+                </div>
+            </div>
+
+            <div style="background: #fff8e1; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #FBC02D; margin-top: 1.5rem;">
+                <h4 style="color: #F57F17; margin-bottom: 0.5rem;">💰 Wallet Security</h4>
+                <p style="color: #555; font-size: 0.95rem;">Worker wallets are held in a secure escrow account with ICICI Bank. All transactions are logged. 
+                    Funds cannot be lost due to platform failure. Insurance coverage for gross negligence.</p>
+            </div>
+        </div>
+
+        <!-- Fraud Detection -->
+        <div class="section">
+            <h2 class="section-title">🚨 Fraud Detection & Prevention</h2>
+
+            <h3 class="subsection-title">Threat Model</h3>
+            <div class="threat-model">
+                <div class="threat-card">
+                    <h4>💳 Payment Fraud</h4>
+                    <p>Stolen card usage, chargebacks, fake transactions</p>
+                    <div class="mitigation"><strong>Mitigation:</strong> 3D Secure, velocity checks, device fingerprinting</div>
+                </div>
+                <div class="threat-card">
+                    <h4>👤 Account Takeover</h4>
+                    <p>Unauthorized access to user accounts</p>
+                    <div class="mitigation"><strong>Mitigation:</strong> 2FA, login alerts, unusual activity detection</div>
+                </div>
+                <div class="threat-card">
+                    <h4>📱 SIM Swap Attacks</h4>
+                    <p>Attacker gains phone number for OTP interception</p>
+                    <div class="mitigation"><strong>Mitigation:</strong> Email verification, unusual login alerts, 2FA</div>
+                </div>
+                <div class="threat-card">
+                    <h4>🤖 Bot Networks</h4>
+                    <p>Automated account creation, fake jobs, spam</p>
+                    <div class="mitigation"><strong>Mitigation:</strong> CAPTCHA, rate limiting, behavioral analysis</div>
+                </div>
+                <div class="threat-card">
+                    <h4>📍 GPS Spoofing</h4>
+                    <p>Workers fake location during job execution</p>
+                    <div class="mitigation"><strong>Mitigation:</strong> Location consistency checks, photo verification</div>
+                </div>
+                <div class="threat-card">
+                    <h4>⭐ Fake Reviews</h4>
+                    <p>Manipulated ratings to boost worker profile</p>
+                    <div class="mitigation"><strong>Mitigation:</strong> Verified reviews, photo verification, NLP analysis</div>
+                </div>
+            </div>
+
+            <h3 class="subsection-title">AI Fraud Detection System</h3>
+            <div style="background: var(--light); padding: 2rem; border-radius: 10px; margin-top: 1.5rem;">
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <span><strong>Anomaly Detection:</strong> Isolation Forest algorithm detects unusual user behavior</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span><strong>Device Fingerprinting:</strong> Tracks device identifiers to detect identical twins</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span><strong>Velocity Checks:</strong> Flags rapid transactions from same account/device</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span><strong>Behavioral Biometrics:</strong> Analyzes typing patterns, scroll speed, click patterns</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span><strong>Network Analysis:</strong> Detects coordinated fraud rings with shared contacts/IPs</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span><strong>Reputation Scoring:</strong> Machine learning score (0-100) for each transaction</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compliance -->
+        <div class="section">
+            <h2 class="section-title">✅ Regulatory Compliance</h2>
+
+            <h3 class="subsection-title">Global & Regional Compliance</h3>
+            <div style="margin: 2rem 0;">
+                <div class="compliance-badge">🌍 GDPR Compliant</div>
+                <div class="compliance-badge">🇮🇳 RBI Fintech Compliant</div>
+                <div class="compliance-badge">💳 PCI DSS Level 1</div>
+                <div class="compliance-badge">🔐 ISO 27001 Ready</div>
+                <div class="compliance-badge">⚖️ Data Protection Act</div>
+                <div class="compliance-badge">📋 AML/KYC Compliant</div>
+                <div class="compliance-badge">🏛️ GST Compliant</div>
+                <div class="compliance-badge">👥 Labor Law Compliant</div>
+            </div>
+
+            <h3 class="subsection-title">Specific Implementations</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                <div>
+                    <h4 style="color: var(--secondary); margin-bottom: 1rem;">Know Your Customer (KYC)</h4>
+                    <ul style="list-style: none; color: #555;">
+                        <li style="padding: 0.5rem 0;">✓ Aadhaar verification for Indian citizens</li>
+                        <li style="padding: 0.5rem 0;">✓ Pan card for business accounts</li>
+                        <li style="padding: 0.5rem 0;">✓ Selfie with ID document verification</li>
+                        <li style="padding: 0.5rem 0;">✓ Address proof (utility bill/rental agreement)</li>
+                        <li style="padding: 0.5rem 0;">✓ Bank account verification</li>
+                        <li style="padding: 0.5rem 0;">✓ Background checks for workers</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 style="color: var(--secondary); margin-bottom: 1rem;">Anti-Money Laundering (AML)</h4>
+                    <ul style="list-style: none; color: #555;">
+                        <li style="padding: 0.5rem 0;">✓ Transaction monitoring & limits</li>
+                        <li style="padding: 0.5rem 0;">✓ Suspicious transaction reporting (STR)</li>
+                        <li style="padding: 0.5rem 0;">✓ Customer due diligence (CDD)</li>
+                        <li style="padding: 0.5rem 0;">✓ Enhanced due diligence (EDD) for high-risk users</li>
+                        <li style="padding: 0.5rem 0;">✓ Sanctions screening (OFAC)</li>
+                        <li style="padding: 0.5rem 0;">✓ Record keeping for 5 years</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoring & Incident -->
+        <div class="section">
+            <h2 class="section-title">📊 Monitoring, Incident Response & Audits</h2>
+
+            <h3 class="subsection-title">24/7 Security Monitoring</h3>
+            <div class="security-pillar" style="background: linear-gradient(135deg, #F44336, #EF5350);">
+                <h3>Continuous Monitoring</h3>
+                <ul>
+                    <li>Real-time intrusion detection system (IDS)</li>
+                    <li>WAF (Web Application Firewall) protection</li>
+                    <li>DDoS mitigation with AWS Shield</li>
+                    <li>Log aggregation & analysis with ELK stack</li>
+                    <li>Security Information & Event Management (SIEM)</li>
+                    <li>Automated threat intelligence feeds</li>
+                </ul>
+            </div>
+
+            <h3 class="subsection-title">Incident Response Plan</h3>
+            <div class="data-flow">
+                <h4>Incident Response Procedure</h4>
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-desc"><strong>Detection:</strong> Automated alerts + manual monitoring</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-desc"><strong>Assessment:</strong> Determine scope & severity within 15 minutes</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-desc"><strong>Containment:</strong> Isolate affected systems within 30 minutes</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-desc"><strong>Notification:</strong> Inform affected users + regulatory bodies (if required)</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-desc"><strong>Remediation:</strong> Fix vulnerability + patch systems</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div class="step-desc"><strong>Post-incident:</strong> Root cause analysis + prevent future occurrences</div>
+                </div>
+            </div>
+
+            <h3 class="subsection-title">Security Audits & Testing</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                <div style="background: #e0f2f1; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #00897B;">
+                    <h4 style="color: #00695C; margin-bottom: 0.5rem;">🔍 Internal Testing</h4>
+                    <ul style="list-style: none; font-size: 0.9rem; color: #555;">
+                        <li>✓ Code review (SAST)</li>
+                        <li>✓ Dependency scanning</li>
+                        <li>✓ Unit test security</li>
+                        <li>✓ Weekly automated scans</li>
+                    </ul>
+                </div>
+                <div style="background: #f1f8e9; padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--accent);">
+                    <h4 style="color: #558b2f; margin-bottom: 0.5rem;">🛡️ External Testing</h4>
+                    <ul style="list-style: none; font-size: 0.9rem; color: #555;">
+                        <li>✓ Penetration testing (quarterly)</li>
+                        <li>✓ Bug bounty program</li>
+                        <li>✓ Third-party audits (annual)</li>
+                        <li>✓ Vulnerability assessments</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="section">
+            <h2 class="section-title">🏆 Security Certifications & Standards</h2>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div style="background: linear-gradient(135deg, #fff3cd, #ffeaa7); padding: 1.5rem; border-radius: 10px; text-align: center; border: 2px solid #ffc107;">
+                    <h4 style="color: #cc7a00; margin-bottom: 0.5rem;">PCI DSS</h4>
+                    <p style="font-size: 0.85rem; color: #666;">Level 1<br>Payment card security</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); padding: 1.5rem; border-radius: 10px; text-align: center; border: 2px solid #2196F3;">
+                    <h4 style="color: #1565C0; margin-bottom: 0.5rem;">ISO 27001</h4>
+                    <p style="font-size: 0.85rem; color: #666;">Information security<br>management (Target 2024)</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #f3e5f5, #e1bee7); padding: 1.5rem; border-radius: 10px; text-align: center; border: 2px solid #9C27B0;">
+                    <h4 style="color: #6A1B9A; margin-bottom: 0.5rem;">GDPR</h4>
+                    <p style="font-size: 0.85rem; color: #666;">EU data protection<br>Compliant</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #ffe0b2, #ffcc80); padding: 1.5rem; border-radius: 10px; text-align: center; border: 2px solid #FF9800;">
+                    <h4 style="color: #E65100; margin-bottom: 0.5rem;">SOC 2</h4>
+                    <p style="font-size: 0.85rem; color: #666;">Service organization<br>compliance (Target 2024)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Security Best Practices -->
+        <div class="section">
+            <h2 class="section-title">👥 User Security Practices</h2>
+
+            <div style="background: #f5f5f5; padding: 2rem; border-radius: 10px;">
+                <h4 style="color: var(--secondary); margin-bottom: 1.5rem;">📋 Recommended User Security Practices</h4>
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <span>Use strong, unique passwords (12+ characters)</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span>Enable two-factor authentication (2FA)</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span>Never share OTP or authentication codes</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span>Log out on shared/public devices</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span>Keep app updated to latest version</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span>Use secure WiFi (avoid public networks)</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span>Report suspicious activity immediately</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span>Review payment & activity regularly</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Job Boy Platform. All rights reserved.</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">For security concerns, please contact: <strong>security@jobboy.in</strong></p>
+    </footer>
+</body>
+</html>

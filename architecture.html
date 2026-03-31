@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Architecture - Job Boy Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B35;
+            --secondary: #004E89;
+            --accent: #1E8449;
+            --light: #F8F9FA;
+            --dark: #1A1A1A;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: #f5f5f5;
+        }
+
+        .navbar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .diagram-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid var(--primary);
+            overflow-x: auto;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .component {
+            background: white;
+            border: 2px solid var(--secondary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .component:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-color: var(--primary);
+        }
+
+        .component-icon {
+            font-size: 2.5rem;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .component-text h4 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .component-text p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .tech-box {
+            background: linear-gradient(135deg, var(--primary), #ff8a50);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .tech-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+        }
+
+        .tech-box h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .tech-box p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .flow-diagram {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            margin: 2rem 0;
+        }
+
+        .flow-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .flow-arrow {
+            color: var(--primary);
+            font-size: 1.5rem;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .flow-text {
+            flex: 1;
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .color-legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            flex-shrink: 0;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="index.html" class="logo">🧾 Job Boy</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="overview.html">Overview</a></li>
+                <li><a href="architecture.html" style="color: var(--primary); font-weight: 700;">Architecture</a></li>
+                <li><a href="features.html">Features</a></li>
+                <li><a href="workflow.html">Workflows</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- System Architecture -->
+        <div class="section">
+            <h2 class="section-title">🏗️ System Architecture Overview</h2>
+            
+            <div class="diagram-box">
+                <svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Title -->
+                    <text x="500" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#004E89">Job Boy Platform - High Level Architecture</text>
+                    
+                    <!-- Client Layer -->
+                    <rect x="50" y="80" width="250" height="120" fill="#E8F4F8" stroke="#004E89" stroke-width="2" rx="10"/>
+                    <text x="175" y="110" font-size="16" font-weight="bold" text-anchor="middle" fill="#004E89">CLIENT LAYER</text>
+                    <circle cx="100" cy="160" r="30" fill="#FF6B35"/>
+                    <text x="100" y="165" font-size="12" font-weight="bold" text-anchor="middle" fill="white">iOS</text>
+                    <circle cx="175" cy="160" r="30" fill="#FF6B35"/>
+                    <text x="175" y="165" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Android</text>
+                    <circle cx="250" cy="160" r="30" fill="#FF6B35"/>
+                    <text x="250" y="165" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Web</text>
+
+                    <!-- API Gateway -->
+                    <rect x="350" y="80" width="300" height="120" fill="#FFF4E6" stroke="#FF6B35" stroke-width="2" rx="10"/>
+                    <text x="500" y="110" font-size="16" font-weight="bold" text-anchor="middle" fill="#FF6B35">API GATEWAY</text>
+                    <rect x="370" y="130" width="260" height="50" fill="white" stroke="#FF6B35" stroke-width="1" rx="5"/>
+                    <text x="500" y="165" font-size="13" text-anchor="middle" fill="#333">REST API • WebSocket • Authentication • Rate Limiting</text>
+
+                    <!-- Backend Services -->
+                    <rect x="700" y="80" width="250" height="120" fill="#E8F5E9" stroke="#1E8449" stroke-width="2" rx="10"/>
+                    <text x="825" y="110" font-size="16" font-weight="bold" text-anchor="middle" fill="#1E8449">BACKEND SERVICES</text>
+                    <text x="825" y="145" font-size="12" text-anchor="middle" fill="#333">User Service</text>
+                    <text x="825" y="165" font-size="12" text-anchor="middle" fill="#333">Booking Service</text>
+                    <text x="825" y="185" font-size="12" text-anchor="middle" fill="#333">Payment Service</text>
+
+                    <!-- Data Layer -->
+                    <rect x="50" y="280" width="220" height="120" fill="#F3E5F5" stroke="#7B1FA2" stroke-width="2" rx="10"/>
+                    <text x="160" y="310" font-size="16" font-weight="bold" text-anchor="middle" fill="#7B1FA2">DATABASE</text>
+                    <circle cx="120" cy="360" r="25" fill="#7B1FA2"/>
+                    <text x="120" y="365" font-size="11" font-weight="bold" text-anchor="middle" fill="white">SQL</text>
+                    <circle cx="200" cy="360" r="25" fill="#7B1FA2"/>
+                    <text x="200" y="365" font-size="11" font-weight="bold" text-anchor="middle" fill="white">Cache</text>
+
+                    <!-- Real-time Services -->
+                    <rect x="330" y="280" width="220" height="120" fill="#FCE4EC" stroke="#C2185B" stroke-width="2" rx="10"/>
+                    <text x="440" y="310" font-size="16" font-weight="bold" text-anchor="middle" fill="#C2185B">REAL-TIME</text>
+                    <text x="440" y="345" font-size="12" text-anchor="middle" fill="#333">WebSocket Server</text>
+                    <text x="440" y="365" font-size="12" text-anchor="middle" fill="#333">Firebase</text>
+                    <text x="440" y="385" font-size="12" text-anchor="middle" fill="#333">Geolocation Hub</text>
+
+                    <!-- External Services -->
+                    <rect x="610" y="280" width="220" height="120" fill="#E0F2F1" stroke="#00897B" stroke-width="2" rx="10"/>
+                    <text x="720" y="310" font-size="16" font-weight="bold" text-anchor="middle" fill="#00897B">EXTERNAL SERVICES</text>
+                    <text x="720" y="345" font-size="12" text-anchor="middle" fill="#333">Google Maps API</text>
+                    <text x="720" y="365" font-size="12" text-anchor="middle" fill="#333">Payment Gateway</text>
+                    <text x="720" y="385" font-size="12" text-anchor="middle" fill="#333">SMS/Email Provider</text>
+
+                    <!-- Storage & Queue -->
+                    <rect x="890" y="280" width="100" height="120" fill="#E3F2FD" stroke="#1565C0" stroke-width="2" rx="10"/>
+                    <text x="940" y="330" font-size="12" font-weight="bold" text-anchor="middle" fill="#1565C0">Storage</text>
+                    <text x="940" y="350" font-size="11" text-anchor="middle" fill="#333">AWS S3</text>
+                    <text x="940" y="370" font-size="11" text-anchor="middle" fill="#333">CDN</text>
+
+                    <!-- Arrows -->
+                    <path d="M 300 140 L 350 140" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    <path d="M 650 140 L 700 140" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    
+                    <path d="M 160 200 L 160 280" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    <path d="M 440 200 L 440 280" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    <path d="M 720 200 L 720 280" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    <path d="M 825 200 L 940 280" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+                    <!-- Legend -->
+                    <text x="50" y="500" font-size="13" font-weight="bold" fill="#333">Layer Description:</text>
+                    <circle cx="65" cy="530" r="8" fill="#FF6B35"/>
+                    <text x="80" y="535" font-size="12" fill="#333">Client Applications</text>
+                    
+                    <circle cx="65" cy="560" r="8" fill="#FF6B35"/>
+                    <text x="80" y="565" font-size="12" fill="#333">API & Gateway</text>
+
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                            <polygon points="0 0, 10 5, 0 10" fill="#666"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Backend Architecture -->
+        <div class="section">
+            <h2 class="section-title">⚙️ Microservices Architecture</h2>
+            
+            <div class="grid-3">
+                <div class="tech-box">
+                    <h4>👤 User Service</h4>
+                    <p>Profile, KYC, Verification, Authentication</p>
+                </div>
+                <div class="tech-box">
+                    <h4>📅 Booking Service</h4>
+                    <p>Job creation, Acceptance, Status tracking</p>
+                </div>
+                <div class="tech-box">
+                    <h4>💳 Payment Service</h4>
+                    <p>Transactions, Wallet, Refunds, Invoices</p>
+                </div>
+                <div class="tech-box">
+                    <h4>📍 Location Service</h4>
+                    <p>GPS tracking, Distance calculation, Geofencing</p>
+                </div>
+                <div class="tech-box">
+                    <h4>⭐ Rating Service</h4>
+                    <p>Reviews, Ratings, Complaints, Feedback</p>
+                </div>
+                <div class="tech-box">
+                    <h4>🤖 AI Service</h4>
+                    <p>Recommendations, Pricing, Fraud detection</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Stack -->
+        <div class="section">
+            <h2 class="section-title">🛠️ Technology Stack</h2>
+            
+            <div class="grid-2">
+                <div>
+                    <h4 style="color: var(--secondary); margin-bottom: 1rem;">Backend</h4>
+                    <div class="component">
+                        <div class="component-icon">☕</div>
+                        <div class="component-text">
+                            <h4>Spring Boot</h4>
+                            <p>Enterprise-grade Java framework for APIs and microservices</p>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-icon">🐘</div>
+                        <div class="component-text">
+                            <h4>PostgreSQL</h4>
+                            <p>Reliable relational database for structured data</p>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-icon">⚡</div>
+                        <div class="component-text">
+                            <h4>Redis</h4>
+                            <p>In-memory caching and session management</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="color: var(--secondary); margin-bottom: 1rem;">Frontend & Real-time</h4>
+                    <div class="component">
+                        <div class="component-icon">⚛️</div>
+                        <div class="component-text">
+                            <h4>React / React Native</h4>
+                            <p>Modern UI for web and mobile applications</p>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-icon">🔌</div>
+                        <div class="component-text">
+                            <h4>WebSocket / Socket.io</h4>
+                            <p>Real-time communication and location streaming</p>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-icon">🔥</div>
+                        <div class="component-text">
+                            <h4>Firebase</h4>
+                            <p>Push notifications and real-time database</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Flow -->
+        <div class="section">
+            <h2 class="section-title">📊 Data Flow Architecture</h2>
+            
+            <div class="diagram-box">
+                <svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Title -->
+                    <text x="500" y="30" font-size="20" font-weight="bold" text-anchor="middle" fill="#004E89">End-to-End Data Flow - Job Booking Process</text>
+                    
+                    <!-- User -->
+                    <circle cx="100" cy="100" r="35" fill="#FF6B35"/>
+                    <text x="100" y="105" font-size="14" font-weight="bold" text-anchor="middle" fill="white">USER</text>
+
+                    <!-- Mobile App -->
+                    <rect x="200" y="65" width="100" height="70" fill="#4CAF50" stroke="#2E7D32" stroke-width="2" rx="5"/>
+                    <text x="250" y="105" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Mobile App</text>
+
+                    <!-- API Gateway -->
+                    <rect x="350" y="65" width="100" height="70" fill="#2196F3" stroke="#1565C0" stroke-width="2" rx="5"/>
+                    <text x="400" y="105" font-size="12" font-weight="bold" text-anchor="middle" fill="white">API Gateway</text>
+
+                    <!-- Services -->
+                    <rect x="500" y="65" width="100" height="70" fill="#FF9800" stroke="#E65100" stroke-width="2" rx="5"/>
+                    <text x="550" y="100" font-size="11" font-weight="bold" text-anchor="middle" fill="white">Booking</text>
+                    <text x="550" y="115" font-size="11" font-weight="bold" text-anchor="middle" fill="white">Service</text>
+
+                    <!-- Database -->
+                    <rect x="650" y="65" width="100" height="70" fill="#9C27B0" stroke="#6A1B9A" stroke-width="2" rx="5"/>
+                    <text x="700" y="105" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Database</text>
+
+                    <!-- Cache -->
+                    <rect x="800" y="65" width="100" height="70" fill="#00BCD4" stroke="#00838F" stroke-width="2" rx="5"/>
+                    <text x="850" y="105" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Cache/Queue</text>
+
+                    <!-- Notification Service -->
+                    <rect x="200" y="200" width="100" height="70" fill="#E91E63" stroke="#AD1457" stroke-width="2" rx="5"/>
+                    <text x="250" y="240" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Notifications</text>
+
+                    <!-- Real-time Service -->
+                    <rect x="350" y="200" width="100" height="70" fill="#009688" stroke="#00695C" stroke-width="2" rx="5"/>
+                    <text x="400" y="240" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Real-time</text>
+
+                    <!-- Worker -->
+                    <circle cx="850" cy="260" r="35" fill="#FF6B35"/>
+                    <text x="850" y="265" font-size="14" font-weight="bold" text-anchor="middle" fill="white">WORKER</text>
+
+                    <!-- Arrows -->
+                    <path d="M 135 100 L 200 100" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    <path d="M 300 100 L 350 100" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    <path d="M 450 100 L 500 100" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    <path d="M 600 100 L 650 100" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                    <path d="M 750 100 L 800 100" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+                    <!-- Notifications -->
+                    <path d="M 550 140 L 300 200" stroke="#E91E63" stroke-width="2" fill="none" marker-end="url(#arrowhead2)"/>
+                    <path d="M 550 140 L 400 200" stroke="#009688" stroke-width="2" fill="none" marker-end="url(#arrowhead3)"/>
+
+                    <!-- Worker notification -->
+                    <path d="M 450 240 L 815 260" stroke="#009688" stroke-width="2" fill="none" marker-end="url(#arrowhead3)"/>
+
+                    <!-- Steps -->
+                    <text x="500" y="350" font-size="12" fill="#333">1. User requests job → 2. API Gateway validates → 3. Booking Service processes → 4. Data saved to DB</text>
+                    <text x="500" y="375" font-size="12" fill="#333">5. Cache updated → 6. Notification Service sends alerts → 7. Real-time updates to worker app</text>
+
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                            <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                        </marker>
+                        <marker id="arrowhead2" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                            <polygon points="0 0, 10 5, 0 10" fill="#E91E63"/>
+                        </marker>
+                        <marker id="arrowhead3" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                            <polygon points="0 0, 10 5, 0 10" fill="#009688"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Security Architecture -->
+        <div class="section">
+            <h2 class="section-title">🔐 Security Architecture</h2>
+            
+            <div class="grid-2">
+                <div class="component">
+                    <div class="component-icon">🔑</div>
+                    <div class="component-text">
+                        <h4>Authentication & Authorization</h4>
+                        <p>JWT tokens, OAuth 2.0, Role-based access control (RBAC), Multi-factor authentication</p>
+                    </div>
+                </div>
+                <div class="component">
+                    <div class="component-icon">🔒</div>
+                    <div class="component-text">
+                        <h4>Data Protection</h4>
+                        <p>End-to-end encryption, SSL/TLS, PCI DSS compliance for payments</p>
+                    </div>
+                </div>
+                <div class="component">
+                    <div class="component-icon">👁️</div>
+                    <div class="component-text">
+                        <h4>Fraud Detection</h4>
+                        <p>AI-based anomaly detection, Device fingerprinting, Behavioral analysis</p>
+                    </div>
+                </div>
+                <div class="component">
+                    <div class="component-icon">📋</div>
+                    <div class="component-text">
+                        <h4>Compliance</h4>
+                        <p>GDPR ready, Data privacy policies, Audit logs, KYC verification</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scalability -->
+        <div class="section">
+            <h2 class="section-title">📈 Scalability & Performance</h2>
+            
+            <div class="flow-diagram">
+                <h4 style="color: var(--secondary); margin-bottom: 1.5rem;">High Availability Strategy</h4>
+                
+                <div class="flow-item">
+                    <div class="flow-arrow">1</div>
+                    <div class="flow-text"><strong>Load Balancing</strong> - Distribute traffic across multiple server instances using Nginx/HAProxy</div>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-arrow">2</div>
+                    <div class="flow-text"><strong>Database Replication</strong> - Master-slave PostgreSQL with automatic failover</div>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-arrow">3</div>
+                    <div class="flow-text"><strong>Caching Layer</strong> - Redis for session, worker data, and frequently accessed data</div>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-arrow">4</div>
+                    <div class="flow-text"><strong>Message Queue</strong> - RabbitMQ/Kafka for asynchronous processing and job queuing</div>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-arrow">5</div>
+                    <div class="flow-text"><strong>CDN</strong> - BunnyCDN for image/video delivery and static content caching</div>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-arrow">6</div>
+                    <div class="flow-text"><strong>Auto-scaling</strong> - Kubernetes for container orchestration and auto-scaling based on demand</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Job Boy Platform. All rights reserved.</p>
+    </footer>
+</body>
+</html>

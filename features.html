@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Features - Service Management System</title>
+    <title>Features - Job Boy Platform</title>
     <style>
         * {
             margin: 0;
@@ -11,774 +11,976 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #FF6B35;
+            --secondary: #004E89;
+            --accent: #1E8449;
+            --light: #F8F9FA;
+            --dark: #1A1A1A;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
-            color: #333;
+            line-height: 1.6;
+            color: var(--dark);
+            background: #f5f5f5;
         }
 
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .navbar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .header-content {
-            max-width: 1400px;
+        .navbar-content {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .nav-links {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 24px;
-            font-weight: 600;
+            gap: 2rem;
+            list-style: none;
         }
 
-        .back-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid white;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
+        .nav-links a {
             text-decoration: none;
-            transition: background 0.3s;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
         }
 
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+        .nav-links a:hover {
+            color: var(--primary);
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 2rem;
         }
 
-        .page-title {
+        .section {
             background: white;
-            padding: 30px;
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .subsection-title {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), #ff8a50);
             border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .page-title h1 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 32px;
+        .subsection-title span {
+            font-size: 2rem;
         }
 
-        .page-title p {
-            color: #666;
-            line-height: 1.6;
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
         }
 
-        .toc {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-            border-left: 5px solid #667eea;
+        .feature-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s;
         }
 
-        .toc h3 {
-            color: #667eea;
-            margin-bottom: 15px;
-            font-size: 18px;
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
-        .toc-list {
-            list-style: none;
+        .feature-card h4 {
+            color: var(--secondary);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .toc-list li {
-            padding: 8px 0;
-        }
-
-        .toc-list a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .toc-list a:hover {
-            text-decoration: underline;
-        }
-
-        .feature-section {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-            scroll-margin-top: 80px;
-        }
-
-        .feature-section h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 24px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
-        }
-
-        .feature-section p {
-            color: #666;
-            line-height: 1.8;
-            margin-bottom: 15px;
-            font-size: 14px;
+        .feature-card p {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.7;
         }
 
         .feature-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
+            list-style: none;
+            margin: 1rem 0;
         }
 
-        .feature-item {
-            background: #f0f4ff;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 3px solid #667eea;
+        .feature-list li {
+            padding: 0.6rem 0;
+            padding-left: 1.8rem;
+            position: relative;
+            color: #555;
+            font-size: 0.95rem;
         }
 
-        .feature-item strong {
-            color: #667eea;
+        .feature-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .tab-section {
+            margin: 2rem 0;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
             display: block;
-            margin-bottom: 5px;
+            animation: fadeIn 0.3s ease-in;
         }
 
-        .feature-item p {
-            color: #666;
-            font-size: 13px;
-            margin: 0;
-        }
-
-        .workflow-steps {
-            background: #f0f4ff;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 15px;
-            border-left: 3px solid #667eea;
-        }
-
-        .workflow-steps h4 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .workflow-steps ol {
-            color: #666;
-            font-size: 13px;
-            line-height: 1.8;
-            margin-left: 20px;
-        }
-
-        .workflow-steps li {
-            margin-bottom: 8px;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 13px;
+            margin: 2rem 0;
+            background: white;
         }
 
         .comparison-table th {
-            background: #667eea;
+            background: var(--secondary);
             color: white;
-            padding: 10px;
+            padding: 1rem;
             text-align: left;
             font-weight: 600;
         }
 
         .comparison-table td {
-            padding: 10px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: var(--light);
         }
 
         .comparison-table tr:hover {
-            background: #f0f4ff;
+            background: #e8f4f8;
         }
 
-        .highlight {
-            background: #fff3e0;
-            padding: 15px;
-            border-left: 4px solid #ff9800;
-            border-radius: 4px;
-            margin-top: 15px;
-            color: #e65100;
-            font-size: 13px;
-        }
-
-        .roles-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .role-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .badge {
+            display: inline-block;
+            background: var(--primary);
             color: white;
-            padding: 25px;
-            border-radius: 10px;
-        }
-
-        .role-card h3 {
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
-
-        .role-card ul {
-            list-style: none;
-            font-size: 13px;
-            line-height: 1.8;
-        }
-
-        .role-card li:before {
-            content: "✓ ";
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
             font-weight: 600;
-            margin-right: 6px;
+            margin-right: 0.5rem;
         }
 
-        .footer {
+        footer {
+            background: var(--dark);
+            color: white;
             text-align: center;
-            padding: 30px;
-            color: #999;
-            font-size: 13px;
-            margin-top: 50px;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-buttons {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-content">
-            <div class="logo">
-                🚀 ServiceHub - Complete Features
-            </div>
-            <a href="index.html" class="back-btn">← Back to Dashboard</a>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Page Title -->
-        <div class="page-title">
-            <h1>✨ Complete Feature Documentation</h1>
-            <p>Comprehensive guide to all features, modules, and capabilities of the Service Management System platform.</p>
-        </div>
-
-        <!-- Table of Contents -->
-        <div class="toc">
-            <h3>📑 Quick Navigation</h3>
-            <ul class="toc-list">
-                <li><a href="#auth">🔐 Authentication & Security</a></li>
-                <li><a href="#jobs">📋 Job Management</a></li>
-                <li><a href="#chat">💬 Chat System</a></li>
-                <li><a href="#ratings">⭐ Ratings & Reviews</a></li>
-                <li><a href="#notifications">🔔 Notifications</a></li>
-                <li><a href="#analytics">📊 Analytics & Reports</a></li>
-                <li><a href="#admin">👨‍💼 Admin Dashboard</a></li>
-                <li><a href="#disputes">⚖️ Dispute Management</a></li>
-                <li><a href="#compliance">🛡️ Compliance & Security</a></li>
-                <li><a href="#roles">👥 User Roles</a></li>
-                <li><a href="#execution">🔄 Job Execution Flow</a></li>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="index.html" class="logo">🧾 Job Boy</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="overview.html">Overview</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="features.html" style="color: var(--primary); font-weight: 700;">Features</a></li>
+                <li><a href="workflow.html">Workflows</a></li>
             </ul>
         </div>
+    </nav>
 
-        <!-- Authentication & Security -->
-        <div class="feature-section" id="auth">
-            <h2>🔐 Authentication & Security</h2>
-            <p>Secure user registration, login, and identity verification with multiple authentication methods and KYC compliance.</p>
+    <div class="container">
+        <!-- Employer Features -->
+        <div class="section">
+            <h2 class="section-title">👨‍💼 Employer Features</h2>
 
-            <div class="feature-list">
-                <div class="feature-item">
-                    <strong>📱 Mobile OTP</strong>
-                    <p>SMS-based one-time password for phone verification during signup</p>
+            <div class="subsection-title">
+                <span>🔐</span>
+                <div>Account & Profile Management</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🔑 Signup & Login</h4>
+                    <ul class="feature-list">
+                        <li>Mobile OTP authentication</li>
+                        <li>Email signup</li>
+                        <li>Google OAuth integration</li>
+                        <li>Two-factor authentication</li>
+                    </ul>
                 </div>
-                <div class="feature-item">
-                    <strong>📧 Email Verification</strong>
-                    <p>Email-based signup with verification link and security checks</p>
+                <div class="feature-card">
+                    <h4>👤 Profile Management</h4>
+                    <ul class="feature-list">
+                        <li>Personal & business information</li>
+                        <li>Profile verification badge</li>
+                        <li>Multiple saved addresses</li>
+                        <li>Billing preferences</li>
+                    </ul>
                 </div>
-                <div class="feature-item">
-                    <strong>🔑 Multi-factor Authentication</strong>
-                    <p>Optional 2FA for enhanced account security</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📋 KYC Verification</strong>
-                    <p>ID proof, address proof, and company documents verification</p>
-                </div>
-                <div class="feature-item">
-                    <strong>💾 Session Management</strong>
-                    <p>Secure session handling with automatic timeout</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📱 Multi-Device Login</strong>
-                    <p>Login from multiple devices with session control</p>
+                <div class="feature-card">
+                    <h4>📍 Address Management</h4>
+                    <ul class="feature-list">
+                        <li>Save home address</li>
+                        <li>Save office address</li>
+                        <li>Add multiple locations</li>
+                        <li>Set preferred address</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="workflow-steps">
-                <h4>Signup Workflow</h4>
-                <ol>
-                    <li>User enters email/phone and basic details</li>
-                    <li>OTP/verification link sent</li>
-                    <li>User verifies contact information</li>
-                    <li>Create password with security requirements</li>
-                    <li>Optional KYC document upload</li>
-                    <li>Account activated - ready to use</li>
-                </ol>
+            <div class="subsection-title">
+                <span>🔍</span>
+                <div>Worker Discovery & Search</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🎯 Advanced Search</h4>
+                    <ul class="feature-list">
+                        <li>Search by service type</li>
+                        <li>Filter by location (GPS-based)</li>
+                        <li>Filter by distance radius</li>
+                        <li>Real-time availability status</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>⭐ Smart Filters</h4>
+                    <ul class="feature-list">
+                        <li>Filter by worker rating</li>
+                        <li>Filter by hourly rate</li>
+                        <li>Filter by experience</li>
+                        <li>View worker portfolio</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>💡 Recommendations</h4>
+                    <ul class="feature-list">
+                        <li>AI-powered suggestions</li>
+                        <li>Based on job history</li>
+                        <li>Distance optimization</li>
+                        <li>Quality preferences</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection-title">
+                <span>⚡</span>
+                <div>Job Booking & Management</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📋 Create Job Request</h4>
+                    <ul class="feature-list">
+                        <li>Detailed job description</li>
+                        <li>Upload images/videos</li>
+                        <li>Specify date & time</li>
+                        <li>Duration selection (hour/day)</li>
+                        <li>Budget setting</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>✅ Instant Booking</h4>
+                    <ul class="feature-list">
+                        <li>Confirm worker selection</li>
+                        <li>Auto-pricing calculation</li>
+                        <li>Instant confirmation</li>
+                        <li>Send to worker immediately</li>
+                        <li>Auto-timeout management</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 Job History</h4>
+                    <ul class="feature-list">
+                        <li>View all past bookings</li>
+                        <li>Re-book previous workers</li>
+                        <li>Job completion status</li>
+                        <li>Download invoices</li>
+                        <li>Payment receipts</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection-title">
+                <span>📍</span>
+                <div>Tracking & Communication</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📡 Live Tracking</h4>
+                    <ul class="feature-list">
+                        <li>Real-time worker location</li>
+                        <li>ETA calculation</li>
+                        <li>Distance to worker</li>
+                        <li>Route optimization</li>
+                        <li>Google Maps integration</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>💬 Communication</h4>
+                    <ul class="feature-list">
+                        <li>In-app chat messaging</li>
+                        <li>Worker call (masked number)</li>
+                        <li>Message history</li>
+                        <li>Notification alerts</li>
+                        <li>Quick reply templates</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection-title">
+                <span>💳</span>
+                <div>Payments & Invoicing</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>💰 Multiple Payment Options</h4>
+                    <ul class="feature-list">
+                        <li>UPI payments</li>
+                        <li>Credit/Debit card</li>
+                        <li>Wallet balance</li>
+                        <li>Cash payment option</li>
+                        <li>Payment history</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📄 Invoicing</h4>
+                    <ul class="feature-list">
+                        <li>Auto-invoice generation</li>
+                        <li>Download as PDF</li>
+                        <li>Tax compliance</li>
+                        <li>GST included</li>
+                        <li>Email invoices</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>💳 Smart Pricing</h4>
+                    <ul class="feature-list">
+                        <li>Dynamic pricing model</li>
+                        <li>Surge pricing alerts</li>
+                        <li>Price estimation</li>
+                        <li>Transparent breakdown</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection-title">
+                <span>⭐</span>
+                <div>Ratings & Feedback</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>⭐ Worker Reviews</h4>
+                    <ul class="feature-list">
+                        <li>Rate worker (1-5 stars)</li>
+                        <li>Written feedback</li>
+                        <li>Photo submission</li>
+                        <li>Work quality rating</li>
+                        <li>Punctuality rating</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🚨 Complaint System</h4>
+                    <ul class="feature-list">
+                        <li>File disputes</li>
+                        <li>Report quality issues</li>
+                        <li>Attach evidence</li>
+                        <li>Track resolution</li>
+                        <li>Refund processing</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <!-- Job Management -->
-        <div class="feature-section" id="jobs">
-            <h2>📋 Job Management</h2>
-            <p>Complete job lifecycle management with advanced search, filtering, and intelligent recommendations.</p>
+        <!-- Worker Features -->
+        <div class="section">
+            <h2 class="section-title">🔧 Worker Features</h2>
 
-            <div class="feature-list">
-                <div class="feature-item">
-                    <strong>✏️ Job Posting</strong>
-                    <p>Create detailed job posts with images, videos, budget, and timeline</p>
+            <div class="subsection-title">
+                <span>🔐</span>
+                <div>Account & Verification</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🔑 Signup & Verification</h4>
+                    <ul class="feature-list">
+                        <li>Mobile OTP signup</li>
+                        <li>Email verification</li>
+                        <li>KYC documentation upload</li>
+                        <li>Identity verification</li>
+                        <li>Address proof upload</li>
+                    </ul>
                 </div>
-                <div class="feature-item">
-                    <strong>🔍 Advanced Search</strong>
-                    <p>Search jobs by location, category, budget, and keywords</p>
-                </div>
-                <div class="feature-item">
-                    <strong>🎯 Smart Recommendations</strong>
-                    <p>AI-powered job suggestions based on skills and preferences</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📍 Location Filtering</strong>
-                    <p>Find jobs within specific radius using GPS</p>
-                </div>
-                <div class="feature-item">
-                    <strong>💰 Budget Filtering</strong>
-                    <p>Filter by price range and payment terms</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📂 Category Management</strong>
-                    <p>Organize jobs by service categories and subcategories</p>
+                <div class="feature-card">
+                    <h4>✅ Verification Status</h4>
+                    <ul class="feature-list">
+                        <li>Track KYC approval status</li>
+                        <li>Skill certification upload</li>
+                        <li>Document verification badge</li>
+                        <li>Verified checkmark</li>
+                        <li>Auto-rejection feedback</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="workflow-steps">
-                <h4>Job Posting Workflow</h4>
-                <ol>
-                    <li>Select job category and type (Normal/Urgent)</li>
-                    <li>Add job title, description, and requirements</li>
-                    <li>Set location and service radius</li>
-                    <li>Define budget and payment terms</li>
-                    <li>Set timeline and deadlines</li>
-                    <li>Upload photos/videos (optional)</li>
-                    <li>Review and publish job</li>
-                </ol>
+            <div class="subsection-title">
+                <span>👤</span>
+                <div>Profile & Service Management</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>💼 Profile Setup</h4>
+                    <ul class="feature-list">
+                        <li>Professional photo upload</li>
+                        <li>Work experience details</li>
+                        <li>Certifications & training</li>
+                        <li>Work portfolio</li>
+                        <li>Bio & introduction</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🛠️ Services & Skills</h4>
+                    <ul class="feature-list">
+                        <li>Add multiple services</li>
+                        <li>Service descriptions</li>
+                        <li>Skill tags & categories</li>
+                        <li>Service ratings</li>
+                        <li>Experience level</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>💰 Pricing Setup</h4>
+                    <ul class="feature-list">
+                        <li>Hourly rate setting</li>
+                        <li>Fixed price option</li>
+                        <li>Minimum booking duration</li>
+                        <li>Price per service</li>
+                        <li>Surge pricing participation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection-title">
+                <span>🟢</span>
+                <div>Availability & Status Management</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🟢 Availability Toggle</h4>
+                    <ul class="feature-list">
+                        <li>Online/Offline status</li>
+                        <li>One-click toggle</li>
+                        <li>Status persistence</li>
+                        <li>Working hours setting</li>
+                        <li>Days off management</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>⏸️ Break Mode</h4>
+                    <ul class="feature-list">
+                        <li>Set break duration</li>
+                        <li>Auto-resume option</li>
+                        <li>Multiple breaks per day</li>
+                        <li>Lunch break scheduling</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📍 Service Radius</h4>
+                    <ul class="feature-list">
+                        <li>Define service area</li>
+                        <li>Set distance limit (km)</li>
+                        <li>Multiple zones</li>
+                        <li>Auto-reject far jobs</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection-title">
+                <span>🔔</span>
+                <div>Job Notifications & Management</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🔔 Job Alerts</h4>
+                    <ul class="feature-list">
+                        <li>Instant push notifications</li>
+                        <li>Job details preview</li>
+                        <li>Employer information</li>
+                        <li>Location distance shown</li>
+                        <li> 60-second response window</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>✅ Accept/Reject</h4>
+                    <ul class="feature-list">
+                        <li>Quick accept button</li>
+                        <li>Reject with reason</li>
+                        <li>Custom rejection note</li>
+                        <li>Auto-offer to next worker</li>
+                        <li>View next in queue</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>⏱️ Timeout Management</h4>
+                    <ul class="feature-list">
+                        <li>60-second response timer</li>
+                        <li>Auto-rejection on timeout</li>
+                        <li>No penalty for auto-reject</li>
+                        <li>Penalty statistics</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection-title">
+                <span>💼</span>
+                <div>Job Execution</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>▶️ Job Start</h4>
+                    <ul class="feature-list">
+                        <li>Start job button</li>
+                        <li>GPS location capture</li>
+                        <li>Time tracking starts</li>
+                        <li>Location sharing enabled</li>
+                        <li>Status update to employer</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>⏸️ Pause/Complete</h4>
+                    <ul class="feature-list">
+                        <li>Pause job option</li>
+                        <li>Resume functionality</li>
+                        <li>Complete job button</li>
+                        <li>Work duration tracking</li>
+                        <li>Final location capture</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📸 Work Proof</h4>
+                    <ul class="feature-list">
+                        <li>Upload photos/videos</li>
+                        <li>Before-after images</li>
+                        <li>GPS tagged images</li>
+                        <li>Timestamp proof</li>
+                        <li>Multiple uploads</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection-title">
+                <span>💰</span>
+                <div>Earnings & Wallet</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>💵 Earnings Dashboard</h4>
+                    <ul class="feature-list">
+                        <li>Daily earnings view</li>
+                        <li>Weekly summary</li>
+                        <li>Monthly earnings report</li>
+                        <li>Earnings trends</li>
+                        <li>Job-wise breakdown</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>💳 Wallet System</h4>
+                    <ul class="feature-list">
+                        <li>Wallet balance view</li>
+                        <li>Auto-transfer to wallet</li>
+                        <li>Instant payment option</li>
+                        <li>Pay later feature</li>
+                        <li>Transaction history</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🏦 Withdrawals</h4>
+                    <ul class="feature-list">
+                        <li>Withdraw to bank account</li>
+                        <li>UPI withdrawal</li>
+                        <li>Minimum withdrawal limit</li>
+                        <li>Withdrawal history</li>
+                        <li>Settlement tracking</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <!-- Chat System -->
-        <div class="feature-section" id="chat">
-            <h2>💬 Chat & Messaging System</h2>
-            <p>Real-time communication between employers and workers with rich features and history tracking.</p>
+        <!-- Admin Features -->
+        <div class="section">
+            <h2 class="section-title">👨‍💼 Admin Panel Features</h2>
 
-            <div class="feature-list">
-                <div class="feature-item">
-                    <strong>💬 Real-time Chat</strong>
-                    <p>Instant messaging with WebSocket-based real-time updates</p>
+            <div class="subsection-title">
+                <span>👥</span>
+                <div>User Management</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>👤 User Management</h4>
+                    <ul class="feature-list">
+                        <li>View all employers</li>
+                        <li>View all workers</li>
+                        <li>User statistics</li>
+                        <li>User search & filter</li>
+                        <li>User edit capabilities</li>
+                    </ul>
                 </div>
-                <div class="feature-item">
-                    <strong>📎 File Attachments</strong>
-                    <p>Share images, videos, documents, and other files</p>
+                <div class="feature-card">
+                    <h4>✅ KYC Approval</h4>
+                    <ul class="feature-list">
+                        <li>Pending KYC queue</li>
+                        <li>Document verification</li>
+                        <li>Approve/reject users</li>
+                        <li>Rejection reasons</li>
+                        <li>Re-submission tracking</li>
+                    </ul>
                 </div>
-                <div class="feature-item">
-                    <strong>✅ Read Receipts</strong>
-                    <p>Know when messages are delivered and read</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📜 Message History</strong>
-                    <p>Complete searchable conversation history</p>
-                </div>
-                <div class="feature-item">
-                    <strong>🔔 Notifications</strong>
-                    <p>Get notified of new messages instantly</p>
-                </div>
-                <div class="feature-item">
-                    <strong>🔒 Encrypted</strong>
-                    <p>End-to-end encryption for message security</p>
+                <div class="feature-card">
+                    <h4>🚫 Account Management</h4>
+                    <ul class="feature-list">
+                        <li>Suspend accounts</li>
+                        <li>Block users</li>
+                        <li>Delete accounts</li>
+                        <li>Ban reasons tracking</li>
+                        <li>Appeal management</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="highlight">
-                💡 <strong>Tip:</strong> Use chat to discuss job details, negotiate prices, and share important information before job starts.
+            <div class="subsection-title">
+                <span>📊</span>
+                <div>Analytics & Dashboard</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📈 Dashboard Metrics</h4>
+                    <ul class="feature-list">
+                        <li>Total users count</li>
+                        <li>Active bookings today</li>
+                        <li>Revenue analytics</li>
+                        <li>Peak usage times</li>
+                        <li>Monthly growth stats</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>💹 Financial Reports</h4>
+                    <ul class="feature-list">
+                        <li>Daily revenue</li>
+                        <li>Commission breakdown</li>
+                        <li>Payment method stats</li>
+                        <li>Refund tracking</li>
+                        <li>Financial export (CSV)</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 Performance Metrics</h4>
+                    <ul class="feature-list">
+                        <li>Booking completion rate</li>
+                        <li>Average rating stats</li>
+                        <li>Customer satisfaction</li>
+                        <li>Worker performance</li>
+                        <li>Trend analysis</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection-title">
+                <span>💰</span>
+                <div>Commission & Configuration</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>⚙️ Commission Settings</h4>
+                    <ul class="feature-list">
+                        <li>Set commission percentage</li>
+                        <li>Service-wise commission</li>
+                        <li>Location-wise rates</li>
+                        <li>Time-based pricing</li>
+                        <li>Override rates</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>💳 Payment Configuration</h4>
+                    <ul class="feature-list">
+                        <li>Payment gateway setup</li>
+                        <li>Fees configuration</li>
+                        <li>Settlement period</li>
+                        <li>Payout scheduling</li>
+                        <li>Bank details management</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🎁 Promotions</h4>
+                    <ul class="feature-list">
+                        <li>Create coupon codes</li>
+                        <li>Discount management</li>
+                        <li>Offer creation</li>
+                        <li>Campaign tracking</li>
+                        <li>Usage analytics</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection-title">
+                <span>⚖️</span>
+                <div>Dispute & Complaint Management</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📋 Complaint Queue</h4>
+                    <ul class="feature-list">
+                        <li>View all complaints</li>
+                        <li>Complaint categorization</li>
+                        <li>Priority assignment</li>
+                        <li>Status tracking</li>
+                        <li>Assign to staff</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔍 Investigation Tools</h4>
+                    <ul class="feature-list">
+                        <li>View conversation history</li>
+                        <li>Work proof review</li>
+                        <li>Evidence verification</li>
+                        <li>Add investigation notes</li>
+                        <li>Witness statements</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>💵 Refund Processing</h4>
+                    <ul class="feature-list">
+                        <li>Calculate refund amount</li>
+                        <li>Process refunds</li>
+                        <li>Refund tracking</li>
+                        <li>Dispute resolution</li>
+                        <li>Appeal management</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection-title">
+                <span>📍</span>
+                <div>Service Area & Content</div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🗺️ Service Area</h4>
+                    <ul class="feature-list">
+                        <li>Define cities/regions</li>
+                        <li>Geo-fencing setup</li>
+                        <li>Pincode mapping</li>
+                        <li>Coverage areas</li>
+                        <li>Expansion planning</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📢 Content Management</h4>
+                    <ul class="feature-list">
+                        <li>Push notifications</li>
+                        <li>SMS campaigns</li>
+                        <li>Email marketing</li>
+                        <li>Banner management</li>
+                        <li>Featured listings</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📱 Notification Center</h4>
+                    <ul class="feature-list">
+                        <li>Broadcast messages</li>
+                        <li>Segment targeting</li>
+                        <li>Schedule notifications</li>
+                        <li>Delivery tracking</li>
+                        <li>Analytics per campaign</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <!-- Ratings & Reviews -->
-        <div class="feature-section" id="ratings">
-            <h2>⭐ Ratings & Reviews</h2>
-            <p>Comprehensive feedback system for building trust and accountability on the platform.</p>
-
-            <div class="feature-list">
-                <div class="feature-item">
-                    <strong>⭐ Star Ratings</strong>
-                    <p>5-star rating system (1-5 stars) for service quality</p>
-                </div>
-                <div class="feature-item">
-                    <strong>✍️ Written Reviews</strong>
-                    <p>Detailed text feedback about service experience</p>
-                </div>
-                <div class="feature-item">
-                    <strong>🔄 Bi-directional</strong>
-                    <p>Employers and workers can rate each other</p>
-                </div>
-                <div class="feature-item">
-                    <strong>🛡️ Moderation</strong>
-                    <p>Admin review of reviews to prevent abuse</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📊 Rating Analytics</strong>
-                    <p>Detailed statistics and trends of ratings</p>
-                </div>
-                <div class="feature-item">
-                    <strong>🏆 Badges</strong>
-                    <p>Earn badges for excellent ratings and reliability</p>
-                </div>
-            </div>
-
+        <!-- Feature Comparison -->
+        <div class="section">
+            <h2 class="section-title">📊 Feature Availability Summary</h2>
+            
             <table class="comparison-table">
                 <thead>
                     <tr>
-                        <th>Rating</th>
-                        <th>Description</th>
-                        <th>Badge</th>
+                        <th>Feature Category</th>
+                        <th><span class="badge">Employer</span></th>
+                        <th><span class="badge">Worker</span></th>
+                        <th><span class="badge">Admin</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>4.5-5.0 ⭐⭐⭐⭐⭐</td>
-                        <td>Excellent service, highly recommended</td>
-                        <td>⭐ Excellent</td>
+                        <td><strong>Account Management</strong></td>
+                        <td>✅ Full</td>
+                        <td>✅ Full + KYC</td>
+                        <td>✅ Full + Approve</td>
                     </tr>
                     <tr>
-                        <td>4.0-4.4 ⭐⭐⭐⭐</td>
-                        <td>Very good service, reliable</td>
-                        <td>✓ Very Good</td>
+                        <td><strong>Worker Discovery</strong></td>
+                        <td>✅ Full Search</td>
+                        <td>N/A</td>
+                        <td>✅ View All</td>
                     </tr>
                     <tr>
-                        <td>3.0-3.9 ⭐⭐⭐</td>
-                        <td>Good service, acceptable quality</td>
-                        <td>-</td>
+                        <td><strong>Job Management</strong></td>
+                        <td>✅ Post Jobs</td>
+                        <td>✅ Accept Jobs</td>
+                        <td>✅ Monitor</td>
                     </tr>
                     <tr>
-                        <td>Below 3.0</td>
-                        <td>Needs improvement, potential warnings</td>
-                        <td>⚠️ At Risk</td>
+                        <td><strong>Real-time Tracking</strong></td>
+                        <td>✅ Track Worker</td>
+                        <td>✅ Share Location</td>
+                        <td>✅ View All</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Payments</strong></td>
+                        <td>✅ Pay Worker</td>
+                        <td>✅ Receive Payment</td>
+                        <td>✅ Configure</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ratings</strong></td>
+                        <td>✅ Rate Worker</td>
+                        <td>✅ Receive Ratings</td>
+                        <td>✅ Monitor</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dispute Resolution</strong></td>
+                        <td>✅ File Complaint</td>
+                        <td>✅ Appeal</td>
+                        <td>✅ Full Control</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Analytics</strong></td>
+                        <td>✅ Limited</td>
+                        <td>✅ Earnings</td>
+                        <td>✅ Full</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-
-        <!-- Notifications -->
-        <div class="feature-section" id="notifications">
-            <h2>🔔 Notification System</h2>
-            <p>Multi-channel notifications keeping users informed about important platform events in real-time.</p>
-
-            <div class="feature-list">
-                <div class="feature-item">
-                    <strong>📱 Push Notifications</strong>
-                    <p>In-app and browser push notifications</p>
-                </div>
-                <div class="feature-item">
-                    <strong>💬 SMS Alerts</strong>
-                    <p>Important alerts via SMS for critical events</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📧 Email Notifications</strong>
-                    <p>Detailed email summaries and reports</p>
-                </div>
-                <div class="feature-item">
-                    <strong>⚙️ Customizable</strong>
-                    <p>Control which notifications you receive</p>
-                </div>
-                <div class="feature-item">
-                    <strong>🔔 In-App Messages</strong>
-                    <p>Instant in-app notification feed</p>
-                </div>
-                <div class="feature-item">
-                    <strong>🕐 Scheduled</strong>
-                    <p>Schedule notifications for preferred times</p>
-                </div>
-            </div>
-
-            <div class="highlight">
-                📌 <strong>Key Notifications:</strong> Job posted, Proposal received, Job accepted, Job started, Job completed, Payment processed, Rating received, Dispute created
-            </div>
-        </div>
-
-        <!-- Analytics & Reports -->
-        <div class="feature-section" id="analytics">
-            <h2>📊 Analytics & Reports</h2>
-            <p>Comprehensive analytics dashboard for tracking performance, earnings, and trends.</p>
-
-            <div class="feature-list">
-                <div class="feature-item">
-                    <strong>💰 Revenue Reports</strong>
-                    <p>Daily, weekly, monthly earnings summary</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📈 Performance Metrics</strong>
-                    <p>Job completion rate, average rating, response time</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📋 Job Statistics</strong>
-                    <p>Total jobs, completed, pending, cancelled</p>
-                </div>
-                <div class="feature-item">
-                    <strong>💳 Payment History</strong>
-                    <p>Detailed transaction logs and receipts</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📊 Charts & Graphs</strong>
-                    <p>Visual representation of trends and patterns</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📥 Export Reports</strong>
-                    <p>Download reports in PDF, Excel format</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Admin Dashboard -->
-        <div class="feature-section" id="admin">
-            <h2>👨‍💼 Admin Dashboard</h2>
-            <p>Comprehensive administration panel for platform management and oversight.</p>
-
-            <div class="feature-list">
-                <div class="feature-item">
-                    <strong>👥 User Management</strong>
-                    <p>View, manage, verify, and deactivate users</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📋 Job Moderation</strong>
-                    <p>Review and approve/reject job postings</p>
-                </div>
-                <div class="feature-item">
-                    <strong>💳 Payment Tracking</strong>
-                    <p>Monitor all transactions and payment flows</p>
-                </div>
-                <div class="feature-item">
-                    <strong>💰 Commission Management</strong>
-                    <p>Configure and track commissions by category</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📊 System Analytics</strong>
-                    <p>Platform-wide metrics and KPIs</p>
-                </div>
-                <div class="feature-item">
-                    <strong>🔧 Configuration</strong>
-                    <p>Configure platform settings and policies</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Dispute Management -->
-        <div class="feature-section" id="disputes">
-            <h2>⚖️ Dispute Management</h2>
-            <p>Fair and transparent dispute resolution system protecting all users.</p>
-
-            <div class="feature-list">
-                <div class="feature-item">
-                    <strong>🚨 Raise Dispute</strong>
-                    <p>Create dispute with detailed description</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📸 Upload Proof</strong>
-                    <p>Attach photos, videos, screenshots as evidence</p>
-                </div>
-                <div class="feature-item">
-                    <strong>💬 Discussion</strong>
-                    <p>Chat with other party to resolve</p>
-                </div>
-                <div class="feature-item">
-                    <strong>👨‍⚖️ Admin Review</strong>
-                    <p>Fair hearing by platform administrators</p>
-                </div>
-                <div class="feature-item">
-                    <strong>💰 Refund/Penalty</strong>
-                    <p>Resolution with refunds or compensation</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📜 Appeal</strong>
-                    <p>Appeal system for unfair decisions</p>
-                </div>
-            </div>
-
-            <div class="workflow-steps">
-                <h4>Dispute Resolution Process</h4>
-                <ol>
-                    <li>User raises dispute with details and proof</li>
-                    <li>Other party gets 48 hours to respond</li>
-                    <li>Admin reviews both sides and evidence</li>
-                    <li>Admin makes decision and implements resolution</li>
-                    <li>Loser can appeal within 7 days</li>
-                    <li>Final decision is binding</li>
-                </ol>
-            </div>
-        </div>
-
-        <!-- Compliance & Security -->
-        <div class="feature-section" id="compliance">
-            <h2>🛡️ Compliance & Security</h2>
-            <p>Enterprise-grade security and regulatory compliance features.</p>
-
-            <div class="feature-list">
-                <div class="feature-item">
-                    <strong>🔐 Data Encryption</strong>
-                    <p>256-bit SSL/TLS encryption for all data</p>
-                </div>
-                <div class="feature-item">
-                    <strong>🔑 Role-based Permissions</strong>
-                    <p>Fine-grained access control based on roles</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📋 Audit Logs</strong>
-                    <p>Complete record of all system activities</p>
-                </div>
-                <div class="feature-item">
-                    <strong>🛡️ DDoS Protection</strong>
-                    <p>Advanced protection against attacks</p>
-                </div>
-                <div class="feature-item">
-                    <strong>✅ GDPR Compliant</strong>
-                    <p>User privacy and data protection</p>
-                </div>
-                <div class="feature-item">
-                    <strong>📊 PCI Compliance</strong>
-                    <p>Secure payment processing standards</p>
-                </div>
-            </div>
-
-            <div class="highlight">
-                🔒 <strong>Security:</strong> All payment data is encrypted and stored securely. No sensitive information is stored in plain text. Regular security audits are conducted.
-            </div>
-        </div>
-
-        <!-- User Roles -->
-        <div class="feature-section" id="roles">
-            <h2>👥 User Roles & Permissions</h2>
-            <p>Four distinct user roles with tailored features and permissions for each user type.</p>
-
-            <div class="roles-section">
-                <div class="role-card">
-                    <h3>🔧 Super Admin</h3>
-                    <ul>
-                        <li>User management & KYC verification</li>
-                        <li>Job moderation & approval</li>
-                        <li>Payment tracking & oversight</li>
-                        <li>Commission configuration</li>
-                        <li>Dispute resolution authority</li>
-                        <li>System configuration</li>
-                        <li>Analytics & reports access</li>
-                        <li>Audit log access</li>
-                    </ul>
-                </div>
-
-                <div class="role-card">
-                    <h3>👔 Employer (Customer)</h3>
-                    <ul>
-                        <li>Post jobs (Normal & Urgent)</li>
-                        <li>Search & filter workers</li>
-                        <li>Review proposals & chat</li>
-                        <li>Accept/reject workers</li>
-                        <li>Make payments securely</li>
-                        <li>Rate & review workers</li>
-                        <li>Track job progress</li>
-                        <li>Raise disputes</li>
-                    </ul>
-                </div>
-
-                <div class="role-card">
-                    <h3>👤 Employee (Worker)</h3>
-                    <ul>
-                        <li>Search jobs by category & location</li>
-                        <li>Send proposals & negotiate</li>
-                        <li>Chat with employers</li>
-                        <li>Accept & complete jobs</li>
-                        <li>Upload work proof</li>
-                        <li>Receive payments</li>
-                        <li>Check ratings & reviews</li>
-                        <li>Manage wallet & withdraw</li>
-                    </ul>
-                </div>
-
-                <div class="role-card">
-                    <h3>🏢 Service Provider (Agency)</h3>
-                    <ul>
-                        <li>Add & manage employees</li>
-                        <li>Assign jobs to team</li>
-                        <li>Track team earnings</li>
-                        <li>Manage commissions</li>
-                        <li>Handle bulk jobs</li>
-                        <li>View team analytics</li>
-                        <li>Negotiate commissions</li>
-                        <li>Performance tracking</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Job Execution Flow -->
-        <div class="feature-section" id="execution">
-            <h2>🔄 Job Execution Flow</h2>
-            <p>Complete lifecycle of a job from posting to completion and payment.</p>
-
-            <div class="workflow-steps">
-                <h4>Complete Job Lifecycle</h4>
-                <ol>
-                    <li><strong>Job Posted:</strong> Employer posts a job with details and budget</li>
-                    <li><strong>Job Listed:</strong> Job appears in search results for workers</li>
-                    <li><strong>Proposals Sent:</strong> Interested workers send proposals with pricing</li>
-                    <li><strong>Chat & Negotiation:</strong> Employer chats with workers to clarify</li>
-                    <li><strong>Job Accepted:</strong> Employer accepts one proposal, payment initiated</li>
-                    <li><strong>Payment Held:</strong> Amount held in secure escrow</li>
-                    <li><strong>Worker Travels:</strong> Worker travels to job location with tracking</li>
-                    <li><strong>Job Started:</strong> Worker arrives and checks in (GPS/OTP)</li>
-                    <li><strong>Work in Progress:</strong> Worker performs service, employer can monitor</li>
-                    <li><strong>Job Completed:</strong> Worker marks complete, uploads proof (photos/video)</li>
-                    <li><strong>Employer Confirms:</strong> Employer verifies quality and confirms completion</li>
-                    <li><strong>Payment Released:</strong> Amount released from escrow to wallets</li>
-                    <li><strong>Commission Deducted:</strong> Automatic commission deduction applied</li>
-                    <li><strong>Wallet Credited:</strong> Worker receives payment in wallet (net amount)</li>
-                    <li><strong>Invoice Generated:</strong> Detailed invoice created with all details</li>
-                    <li><strong>Rating & Review:</strong> Both parties can rate and review each other</li>
-                </ol>
-            </div>
-
-            <div class="highlight">
-                ✅ <strong>Success Criteria:</strong> Job completed on time with employer satisfaction and timely payment. Average job completion: 2-4 hours from posting to completion.
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <p>🚀 Service Management System v1.0 | Features Documentation</p>
-            <p style="margin-top: 10px; font-size: 12px;">© 2024 ServiceHub. All rights reserved.</p>
-        </div>
     </div>
+
+    <footer>
+        <p>&copy; 2024 Job Boy Platform. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Tab functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId = btn.getAttribute('data-target');
+                
+                // Remove active from all
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active to clicked
+                btn.classList.add('active');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>

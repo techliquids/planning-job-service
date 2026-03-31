@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monetization - Job Boy Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B35;
+            --secondary: #004E89;
+            --accent: #1E8449;
+            --light: #F8F9FA;
+            --dark: #1A1A1A;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: #f5f5f5;
+        }
+
+        .navbar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .revenue-card {
+            background: linear-gradient(135deg, var(--primary), #ff8a50);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .revenue-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.3);
+        }
+
+        .revenue-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .revenue-amount {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .revenue-card p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            opacity: 0.95;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .chart-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid var(--primary);
+            margin: 2rem 0;
+        }
+
+        .financial-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+        }
+
+        .financial-table th {
+            background: linear-gradient(135deg, var(--secondary), #1565C0);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .financial-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .financial-table tr:nth-child(even) {
+            background: var(--light);
+        }
+
+        .financial-table tr:hover {
+            background: #e8f4f8;
+        }
+
+        .financial-table .amount {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .metric-box {
+            background: white;
+            border: 2px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .metric-box:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .metric-title {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .metric-value {
+            color: var(--primary);
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-desc {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .breakdown-item {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 4px solid var(--primary);
+        }
+
+        .breakdown-item .label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .breakdown-item .value {
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="index.html" class="logo">🧾 Job Boy</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="overview.html">Overview</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="features.html">Features</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Revenue Streams -->
+        <div class="section">
+            <h2 class="section-title">💰 Revenue Streams</h2>
+
+            <div class="revenue-card">
+                <h3>🔧 Commission per Job</h3>
+                <div class="revenue-amount">10-15%</div>
+                <p>Primary revenue source. Charged on the gross job amount paid to workers. Typically 10% in normal hours, 15% during surge pricing.</p>
+                <p style="margin-top: 1rem;"><strong>Example:</strong> ₹2,000 job → ₹200 commission (10%) in normal hours, ₹300 (15%) during peak hours</p>
+            </div>
+
+            <div class="revenue-card">
+                <h3>📈 Surge Pricing Premium</h3>
+                <div class="revenue-amount">20-30%</div>
+                <p>During peak demand hours (7-9 AM, 5-7 PM), job prices increase. Platform gets additional 20-30% premium on top of normal commission.</p>
+                <p style="margin-top: 1rem;"><strong>Example:</strong> ₹2,000 job becomes ₹2,600 during surge (30% premium) → Platform earns ₹260 + ₹39 = ₹299</p>
+            </div>
+
+            <div class="revenue-card">
+                <h3>⭐ Featured Worker Listings</h3>
+                <div class="revenue-amount">₹500-1,000/month</div>
+                <p>Workers can pay for premium placement, higher visibility in search results, and featured badge. Recurring subscription.</p>
+                <p style="margin-top: 1rem;"><strong>Target:</strong> 20% of active workers (1,000 workers) × ₹750 avg = ₹7.5 Lakhs/month</p>
+            </div>
+
+            <div class="revenue-card">
+                <h3>💎 Worker Premium Plan</h3>
+                <div class="revenue-amount">₹300/month</div>
+                <p>Premium features: advance job requests, priority matching, analytics dashboard, reduced commission (8% instead of 10%)</p>
+                <p style="margin-top: 1rem;"><strong>Target:</strong> 15% adoption rate → ₹3-4 Lakhs/month additional revenue</p>
+            </div>
+
+            <div class="revenue-card">
+                <h3>🎁 Employer Subscription</h3>
+                <div class="revenue-amount">₹500/month</div>
+                <p>Business plan for employers: bulk booking discounts, priority matching, API access, analytics, dedicated support</p>
+                <p style="margin-top: 1rem;"><strong>Target:</strong> 100 business subscribers × ₹500 = ₹5 Lakhs/month</p>
+            </div>
+
+            <div class="revenue-card">
+                <h3>💳 Payment Processing Fees</h3>
+                <div class="revenue-amount">1-2.5%</div>
+                <p>Platform keeps portion of payment gateway fees. UPI: 0% (free), Card: 2.5%, Wallet transfers: 1%</p>
+                <p style="margin-top: 1rem;"><strong>Example:</strong> ₹2,000 card payment → Platform earns ₹50 processing fee</p>
+            </div>
+        </div>
+
+        <!-- Financial Projections -->
+        <div class="section">
+            <h2 class="section-title">📊 Financial Projections (Year 1-3)</h2>
+
+            <table class="financial-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Year 1</th>
+                        <th>Year 2</th>
+                        <th>Year 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Active Employers</strong></td>
+                        <td class="amount">10,000</td>
+                        <td class="amount">35,000</td>
+                        <td class="amount">100,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Active Workers</strong></td>
+                        <td class="amount">5,000</td>
+                        <td class="amount">20,000</td>
+                        <td class="amount">60,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Jobs/Month</strong></td>
+                        <td class="amount">5,000</td>
+                        <td class="amount">25,000</td>
+                        <td class="amount">100,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Avg Job Value</strong></td>
+                        <td class="amount">₹2,000</td>
+                        <td class="amount">₹2,100</td>
+                        <td class="amount">₹2,200</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Commission Revenue</strong></td>
+                        <td class="amount">₹60 L</td>
+                        <td class="amount">₹375 L</td>
+                        <td class="amount">₹1,650 L</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Featured Listings</strong></td>
+                        <td class="amount">₹90 L</td>
+                        <td class="amount">₹300 L</td>
+                        <td class="amount">₹750 L</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Premium Subscriptions</strong></td>
+                        <td class="amount">₹40 L</td>
+                        <td class="amount">₹150 L</td>
+                        <td class="amount">₹450 L</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total Monthly Revenue</strong></td>
+                        <td class="amount">₹19 L</td>
+                        <td class="amount">₹92 L</td>
+                        <td class="amount">₹285 L</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Annual Revenue</strong></td>
+                        <td class="amount">₹2.28 Cr</td>
+                        <td class="amount">₹11 Cr</td>
+                        <td class="amount">₹34.2 Cr</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="chart-box">
+                <h4 style="color: var(--secondary); margin-bottom: 1rem;">Revenue Breakdown by Source (Year 1)</h4>
+                <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Pie Chart -->
+                    <circle cx="150" cy="120" r="80" fill="#FF6B35" stroke="white" stroke-width="3"/>
+                    <circle cx="150" cy="120" r="60" fill="white"/>
+                    
+                    <circle cx="150" cy="120" r="80" fill="url(#pie1)" stroke="white" stroke-width="2"/>
+                    
+                    <text x="150" y="125" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">Revenue Mix</text>
+
+                    <!-- Legend -->
+                    <g>
+                        <rect x="280" y="40" width="15" height="15" fill="#FF6B35"/>
+                        <text x="305" y="52" font-size="12" fill="#333">Commission: 60%</text>
+
+                        <rect x="280" y="70" width="15" height="15" fill="#4CAF50"/>
+                        <text x="305" y="82" font-size="12" fill="#333">Featured: 42%</text>
+
+                        <rect x="280" y="100" width="15" height="15" fill="#2196F3"/>
+                        <text x="305" y="112" font-size="12" fill="#333">Premium Plans: -2%</text>
+                    </g>
+
+                    <!-- Note: Simplified for display -->
+                    <defs>
+                        <linearGradient id="pie1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:1" />
+                            <stop offset="40%" style="stop-color:#4CAF50;stop-opacity:1" />
+                            <stop offset="80%" style="stop-color:#2196F3;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Unit Economics -->
+        <div class="section">
+            <h2 class="section-title">📈 Unit Economics & Profitability</h2>
+
+            <div class="grid-2">
+                <div>
+                    <h3 style="color: var(--secondary); margin-bottom: 1.5rem;">Cost Structure (Per Job)</h3>
+                    
+                    <div class="metric-box">
+                        <div class="metric-title">Payment Gateway Fee</div>
+                        <div class="metric-value">₹50</div>
+                        <div class="metric-desc">2.5% on ₹2,000 card payment</div>
+                    </div>
+
+                    <div class="metric-box">
+                        <div class="metric-title">Server/Infrastructure</div>
+                        <div class="metric-value">₹15</div>
+                        <div class="metric-desc">Cloud hosting, databases, APIs</div>
+                    </div>
+
+                    <div class="metric-box">
+                        <div class="metric-title">Customer Support</div>
+                        <div class="metric-value">₹25</div>
+                        <div class="metric-desc">Support team allocation</div>
+                    </div>
+
+                    <div class="metric-box">
+                        <div class="metric-title">Marketing</div>
+                        <div class="metric-value">₹40</div>
+                        <div class="metric-desc">User acquisition cost</div>
+                    </div>
+
+                    <div class="metric-box" style="background: #ffebee; border-color: #FF6B35;">
+                        <div class="metric-title">Total Cost Per Job</div>
+                        <div class="metric-value" style="color: #d32f2f;">₹130</div>
+                        <div class="metric-desc">Fixed + variable costs</div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="color: var(--secondary); margin-bottom: 1.5rem;">Revenue Per Job</h3>
+                    
+                    <div class="metric-box">
+                        <div class="metric-title">Job Value</div>
+                        <div class="metric-value">₹2,000</div>
+                        <div class="metric-desc">Average job payment</div>
+                    </div>
+
+                    <div class="metric-box">
+                        <div class="metric-title">Commission (12% avg)</div>
+                        <div class="metric-value">₹240</div>
+                        <div class="metric-desc">Main revenue stream</div>
+                    </div>
+
+                    <div class="metric-box">
+                        <div class="metric-title">Processing Fees</div>
+                        <div class="metric-value">₹50</div>
+                        <div class="metric-desc">Payment gateway portion</div>
+                    </div>
+
+                    <div class="metric-box">
+                        <div class="metric-title">Subscription Share</div>
+                        <div class="metric-value">₹20</div>
+                        <div class="metric-desc">Premium plans allocation</div>
+                    </div>
+
+                    <div class="metric-box" style="background: #e8f5e9; border-color: var(--accent);">
+                        <div class="metric-title">Total Revenue Per Job</div>
+                        <div class="metric-value" style="color: var(--accent);">₹310</div>
+                        <div class="metric-desc">Gross profit before overhead</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: var(--light); padding: 2rem; border-radius: 10px; margin-top: 2rem;">
+                <h4 style="color: var(--secondary); margin-bottom: 1rem;">💹 Profitability Analysis</h4>
+                
+                <div class="breakdown">
+                    <div class="breakdown-item">
+                        <div class="label">Gross Margin Per Job</div>
+                        <div class="value">₹180</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="label">Gross Margin %</div>
+                        <div class="value">58%</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="label">Jobs Needed for Break-even</div>
+                        <div class="value">27,000/mo</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="label">Break-even Timeline</div>
+                        <div class="value">12-18 months</div>
+                    </div>
+                </div>
+
+                <p style="margin-top: 1rem; color: #666;">
+                    <strong>Note:</strong> Break-even timeline assumes 5-10% monthly user growth and 15% increase in jobs per worker over time. 
+                    After break-even, platform scales to profitability with 40%+ EBITDA margins by Year 2.
+                </p>
+            </div>
+        </div>
+
+        <!-- Growth Opportunities -->
+        <div class="section">
+            <h2 class="section-title">🚀 Future Revenue Opportunities</h2>
+
+            <div class="revenue-card" style="background: linear-gradient(135deg, #4CAF50, #66BB6A);">
+                <h3>💼 B2B Services</h3>
+                <p>API access for corporate clients needing bulk workforce solutions. Enterprise pricing models with custom integrations.</p>
+            </div>
+
+            <div class="revenue-card" style="background: linear-gradient(135deg, #2196F3, #42A5F5);">
+                <h3>🎓 Skill Development</h3>
+                <p>Premium courses for workers to upskill. Certification programs increase their earning potential. Revenue share with instructors.</p>
+            </div>
+
+            <div class="revenue-card" style="background: linear-gradient(135deg, #FF9800, #FFB74D);">
+                <h3>🛡️ Insurance Products</h3>
+                <p>Job protection insurance, health insurance for workers. Partnership with insurance companies for revenue sharing.</p>
+            </div>
+
+            <div class="revenue-card" style="background: linear-gradient(135deg, #9C27B0, #BA68C8);">
+                <h3>📊 Data Analytics</h3>
+                <p>Anonymized workforce data, trends, market insights sold to city planners, construction companies, logistics firms.</p>
+            </div>
+
+            <div class="revenue-card" style="background: linear-gradient(135deg, #F44336, #EF5350);">
+                <h3>🤖 AI-powered Matching</h3>
+                <p>Premium matching algorithms, predictive pricing. Enterprises pay premium for guaranteed worker availability.</p>
+            </div>
+        </div>
+
+        <!-- Market Assumptions -->
+        <div class="section">
+            <h2 class="section-title">📌 Market Assumptions & Sensitivity</h2>
+
+            <table class="financial-table">
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Conservative</th>
+                        <th>Base Case</th>
+                        <th>Optimistic</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Monthly User Growth</strong></td>
+                        <td class="amount">3%</td>
+                        <td class="amount">7%</td>
+                        <td class="amount">12%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Avg Job Value Growth</strong></td>
+                        <td class="amount">0%</td>
+                        <td class="amount">5%/year</td>
+                        <td class="amount">10%/year</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Worker Utilization</strong></td>
+                        <td class="amount">3 jobs/month</td>
+                        <td class="amount">5 jobs/month</td>
+                        <td class="amount">8 jobs/month</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Premium Adoption</strong></td>
+                        <td class="amount">5%</td>
+                        <td class="amount">15%</td>
+                        <td class="amount">25%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Churn Rate</strong></td>
+                        <td class="amount">15%/month</td>
+                        <td class="amount">10%/month</td>
+                        <td class="amount">5%/month</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Year 1 Revenue</strong></td>
+                        <td class="amount">₹80 L</td>
+                        <td class="amount">₹2.28 Cr</td>
+                        <td class="amount">₹5 Cr</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Job Boy Platform. All rights reserved.</p>
+    </footer>
+</body>
+</html>
